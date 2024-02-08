@@ -23,6 +23,7 @@
 
 #include <realtime_tools/realtime_box.h>
 #include <ros/ros.h>
+#include <ros/package.h>
 #include <tf2_ros/buffer.h>
 #include <tf2_ros/transform_listener.h>
 
@@ -121,16 +122,11 @@ namespace panda_torque_mpc
             data_pin_ = pin::Data(model_pin_);
 
             // Creating the collision model
-            // Path to the urdf, srdf & mesh
-            std::string urdf_path = "/home/gepetto/ros_ws/src/panda_torque_mpc/urdf/robot.urdf";
-            std::string srdf_path =  "/home/gepetto/ros_ws/src/panda_torque_mpc/srdf/demo.srdf";
-            std::string mesh_path = EXAMPLE_ROBOT_DATA_MODEL_DIR "/panda_description/meshes";
+            std::string urdf_path = ros::package::getPath("panda_torque_mpc") + "/urdf/robot.urdf";
             
             // Building the GeometryModel
-            boost::shared_ptr<pinocchio::GeometryModel> collision_model = boost::make_shared<pinocchio::GeometryModel>
-            (pinocchio::GeometryModel());
-            pinocchio::urdf::buildGeom(model_pin_, urdf_path, pinocchio::COLLISION, *collision_model, mesh_path);
-            std::cout << collision_model << std::endl;
+            auto collision_model = boost::make_shared<pinocchio::GeometryModel>();
+            pinocchio::urdf::buildGeom(model_pin_, urdf_path, pinocchio::COLLISION, *collision_model);
             double radius = 0.35/2.0;
             auto geometry = pinocchio::GeometryObject::CollisionGeometryPtr(new hpp::fcl::Sphere(radius));
 
