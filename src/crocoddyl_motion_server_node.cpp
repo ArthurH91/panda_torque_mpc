@@ -160,9 +160,6 @@ namespace panda_torque_mpc
 
             collision_model->addCollisionPair(pinocchio::CollisionPair(collision_model->getGeometryId("obstacle"),
                 collision_model->getGeometryId("panda_link7_sc_4")));
-
-            collision_model->addCollisionPair(pinocchio::CollisionPair(collision_model->getGeometryId("obstacle"),
-                collision_model->getGeometryId("panda_link7_sc_4")));
                         
             if ((model_pin_.nq != 7) || (model_pin_.name != "panda"))
             {
