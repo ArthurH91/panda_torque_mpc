@@ -112,7 +112,7 @@ ROS_NAMESPACE=/ctrl_mpc_linearized rosrun panda_torque_mpc crocoddyl_motion_serv
 
 ### Run with motion capture
 
-Select `motion_capture.launch` paramter `relay` to **false** to crate fake motion capture input data.
+Select `motion_capture.launch` parameter `relay` to **false** to create fake motion capture input data.
 
 ```bash
 roslaunch panda_torque_mpc real_controllers.launch controller:=ctrl_mpc_linearized robot_ip:=$PANDA_IP robot:=panda
