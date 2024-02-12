@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <algorithm>
+#include <string>
 #include <Eigen/Dense>
 
 #include <pinocchio/fwd.hpp>
@@ -37,10 +38,10 @@
 
 namespace panda_torque_mpc
 {
-    CrocoddylReaching::CrocoddylReaching(pin::Model _model_pin, const boost::shared_ptr<pin::GeometryModel>& _collision_model ,
-        CrocoddylConfig _config) :
-    config_(_config)
-    {
+    CrocoddylReaching::CrocoddylReaching(pin::Model _model_pin, const boost::shared_ptr<pin::GeometryModel>& _collision_model,
+        CrocoddylConfig& _config) :
+    config_(_config), collision_model_(_collision_model)
+    { 
 
         auto end_effector_frame_id = _model_pin.getFrameId(_config.ee_frame_name);
 
@@ -201,6 +202,11 @@ namespace panda_torque_mpc
         std::cout << "shooting pronlem:   " << *shooting_problem<< std::endl;
 
         std::cout << "ddp problem set up " << std::endl;
+    }
+
+    void CrocoddylReaching::change_obstacle_pose(const pin::SE3& pose, const std::string& geom_name)
+    {
+        collision_model_->geometryObjects[collision_model_->getGeometryId(geom_name)].placement = pose;
     }
 
     bool CrocoddylReaching::valid_pbe()

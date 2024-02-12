@@ -53,7 +53,8 @@ namespace panda_torque_mpc
                           std::string cam_pose_ref_viz_topic_pub,
                           std::string cam_pose_error_topic_pub,
                           std::string ee_pose_error_topic_pub,
-                          std::string ocp_solve_time_topic_pub
+                          std::string ocp_solve_time_topic_pub,
+                          std::string collision_pose_topic_sub
                           )
         {
             bool params_success = true;
@@ -213,6 +214,7 @@ namespace panda_torque_mpc
             pose_mocap_sub_ = nh.subscribe(motion_capture_pose_ref_topic_sub, 10, &CrocoMotionServer::callback_pose_mocap, this);
             pose_camera_object_sub_ = nh.subscribe(pose_camera_object_topic_sub, 10, &CrocoMotionServer::callback_pose_camera_object, this);
             pose_body_object_rel_sub_ = nh.subscribe(pose_object_rel_topic_sub, 10, &CrocoMotionServer::callback_pose_object0_object, this);
+            collision_pose_sub_ = nh.subscribe(collision_pose_topic_sub, 10, &CrocoMotionServer::callback_pose_collision, this);
 
             // State machine variables
             first_robot_sensor_msg_received_ = false;
@@ -224,6 +226,7 @@ namespace panda_torque_mpc
             T_c_o_ref_ = XYZQUATToSE3(pose_c_o_ref);
             T_o_c_ref_ = T_c_o_ref_.inverse();
         }
+
 
         void callback_pose_absolute(const geometry_msgs::PoseStamped &msg)
         {
@@ -406,6 +409,13 @@ namespace panda_torque_mpc
             }
         }
 
+        void callback_pose_collision(const geometry_msgs::PoseStamped &msg)
+        {
+            pin::SE3 pose = posemsg2SE3(msg.pose);
+            croco_reaching_.change_obstacle_pose(pose, "obstacle");
+        }
+
+
         void solve_and_send()
         {
             // Do nothing if no pose reference and sensor state has been received
@@ -523,6 +533,9 @@ namespace panda_torque_mpc
         pin::SE3 T_w_t0_;
         pin::SE3 T_b_e_ref_rtbox_;
 
+        // pose of the collision obstacle
+        pin::SE3 collision_pose_{Eigen::Quaterniond(), Eigen::Vector3d (10.0, 0.0, 0.0)};
+
         // Solve state machine
         bool first_solve_;
         bool first_pose_ref_msg_received_;
@@ -558,6 +571,7 @@ namespace panda_torque_mpc
         ros::Subscriber pose_mocap_sub_;
         ros::Subscriber pose_camera_object_sub_;
         ros::Subscriber pose_body_object_rel_sub_;
+        ros::Subscriber collision_pose_sub_;
 
         // Simulated object
         pin::SE3 T_b_o_init_;
@@ -586,6 +600,7 @@ int main(int argc, char **argv)
     std::string cam_pose_error_topic_pub = "cam_pose_error";
     std::string ee_pose_error_topic_pub = "ee_pose_error";
     std::string ocp_solve_time_topic_pub = "ocp_solve_time";
+    std::string collision_pose_topic_sub = "obstacle_pose";
     auto motion_server = panda_torque_mpc::CrocoMotionServer(
                             nh, 
                             robot_sensors_topic_sub,
@@ -598,7 +613,8 @@ int main(int argc, char **argv)
                             cam_pose_ref_viz_topic_pub,
                             cam_pose_error_topic_pub,
                             ee_pose_error_topic_pub,
-                            ocp_solve_time_topic_pub
+                            ocp_solve_time_topic_pub,
+                            collision_pose_topic_sub
                             );
     int freq_solve;
     int success_read = panda_torque_mpc::get_param_error_tpl<int>(nh, freq_solve, "freq_solve");
