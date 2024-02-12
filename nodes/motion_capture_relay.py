@@ -3,6 +3,7 @@
 import math
 
 import rospy
+import tf2_ros
 
 from geometry_msgs.msg import Point, Pose, PoseStamped, Vector3, Quaternion
 from std_msgs.msg import ColorRGBA, Duration, Header
@@ -36,18 +37,23 @@ class MoCapRelay:
                 f"[{rospy.get_name()}] Node configured to run as motion generator!"
             )
 
-        offset_type = "motion_capture" if self._is_relay else "motion_generator"
-
         self._sphere_radious = rospy.get_param("~sphere_radious")
-        self._offset_x = rospy.get_param(f"~{offset_type}/offset/x", 0.0)
-        self._offset_y = rospy.get_param(f"~{offset_type}/offset/y", 0.0)
-        self._offset_z = rospy.get_param(f"~{offset_type}/offset/z", 1.0)
+        self._target_frame_id = rospy.get_param("~frame_id", "world")
+        self._offset_x = rospy.get_param(f"~motion_generator/offset/x", 0.0)
+        self._offset_y = rospy.get_param(f"~motion_generator/offset/y", 0.0)
+        self._offset_z = rospy.get_param(f"~motion_generator/offset/z", 1.0)
 
         self._motion_axis = rospy.get_param("~motion_generator/axis", "x")
-        self._motion_frame_id = rospy.get_param("~motion_generator/frame_id", "world")
         self._motion_mag = rospy.get_param("~motion_generator/mag", 0.1)
         self._motion_freq = rospy.get_param("~motion_generator/frequency", 1.0)
         self._publish_frequency = rospy.get_param("~publish_frequency", 120.0)
+
+        # -------------------------------
+        #   TF2 subscribers
+        # -------------------------------
+
+        self._tf_buffer = tf2_ros.Buffer()
+        self._listener = tf2_ros.TransformListener(self._tf_buffer)
 
         # -------------------------------
         #   Publishers
@@ -92,10 +98,17 @@ class MoCapRelay:
         self._publish_pose(ps)
 
     def _mocap_subscription_cb(self, data: PoseStamped) -> None:
-        data.pose.position.x -= self._offset_x
-        data.pose.position.y -= self._offset_y
-        data.pose.position.z -= self._offset_z
-        self._publish_pose(data)
+        try:
+            # pose_stamped = tf2_geometry_msgs.PoseStamped(data)
+            converted_pose = self._tf_buffer.transform(
+                data,
+                self._target_frame_id,
+                rospy.Duration(0.1)
+            )
+            self._publish_pose(converted_pose)
+        except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException) as e:
+            rospy.logerr(f"[{rospy.get_name()}] Failed to transform from frame"
+            f" {data.header.frame_id} to frame {self._target_frame_id}. Reason: {str(e)}")
 
     def _publish_pose(self, pose: PoseStamped) -> None:
         m = Marker(
