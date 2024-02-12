@@ -1,0 +1,16 @@
+publish_frequency: 120.0
+sphere_radious: 0.50
+motion_capture:
+  offset:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+motion_generator:
+  offset:
+    x: 0.0
+    y: 0.0
+    z: 0.8
+  frame_id: world
+  axis: x
+  mag: 0.5
+  frequency: 0.5

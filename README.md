@@ -110,6 +110,18 @@ roslaunch panda_torque_mpc real_controllers.launch controller:=ctrl_mpc_lineariz
 ROS_NAMESPACE=/ctrl_mpc_linearized rosrun panda_torque_mpc crocoddyl_motion_server_node
 ```
 
+### Run with motion capture
+
+Select `motion_capture.launch` paramter `relay` to **false** to crate fake motion capture input data.
+
+```bash
+roslaunch panda_torque_mpc real_controllers.launch controller:=ctrl_mpc_linearized robot_ip:=$PANDA_IP robot:=panda
+ROS_NAMESPACE=/ctrl_mpc_linearized rosrun panda_torque_mpc crocoddyl_motion_server_node
+ROS_NAMESPACE=/ctrl_mpc_linearized roslaunch panda_torque_mpc pose_publisher.launch
+roslaunch panda_torque_mpc motion_capture.launch relay:=true
+```
+
+
 # TODOLIST
 * Double check if `initialized` topic is streamed when using the real controller (not likely) 
 * Check if latest franka_ros fixes inverted torque measurements in gazebo sim

@@ -45,7 +45,7 @@
         </collision> -->
       </link>
 
-      <link name="the_ball">
+      <!-- <link name="the_ball">
         <inertial>
           <mass value="1"/>
           <origin xyz="0 0 0"/>
@@ -66,7 +66,7 @@
             <sphere radius="0.15"/>
           </geometry>
         </collision>
-      </link>
+      </link> -->
 
       <link name="wall_link_1">
         <inertial>
@@ -208,11 +208,10 @@
         <parent link="world"/>
         <child link="panda1_box"/>
       </joint>
-      <joint name="the_ball_joint" type="fixed">
+      <!-- <joint name="the_ball_joint" type="fixed">
         <origin xyz="0 0 0.8" />
         <parent link="world"/>
         <child link="the_ball"/>
-      </joint>
+      </joint> -->
   </xacro:macro>
 </robot>
-
