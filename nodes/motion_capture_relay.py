@@ -16,7 +16,7 @@ class MoCapRelay:
 
         if not rospy.has_param("~sphere_radious"):
             rospy.logerr(
-                f"[{rospy.get_name()}] Param ~sphere_radious not fount, but required. Shutting down!"
+                f"[{rospy.get_name()}] Param ~sphere_radious not found, but required. Shutting down!"
             )
             rospy.signal_shutdown("Missing ~sphere_radious param")
             return
