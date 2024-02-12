@@ -41,5 +41,5 @@ repositories:
 
   vcs_repos/natnet_ros_cpp:
     type: git
-    url: https://github.com/L2S-lab/natnet_ros_cpp/tree/main
-    version: V1.2.0
+    url: https://github.com/L2S-lab/natnet_ros_cpp
+    version: v1.2.0
