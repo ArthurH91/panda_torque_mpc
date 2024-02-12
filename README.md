@@ -118,7 +118,7 @@ Select `motion_capture.launch` parameter `relay` to **false** to create fake mot
 roslaunch panda_torque_mpc real_controllers.launch controller:=ctrl_mpc_linearized robot_ip:=$PANDA_IP robot:=panda
 ROS_NAMESPACE=/ctrl_mpc_linearized rosrun panda_torque_mpc crocoddyl_motion_server_node
 ROS_NAMESPACE=/ctrl_mpc_linearized roslaunch panda_torque_mpc pose_publisher.launch
-roslaunch panda_torque_mpc motion_capture.launch relay:=true
+ROS_NAMESPACE=/ctrl_mpc_linearized roslaunch panda_torque_mpc motion_capture.launch relay:=true 
 ```
 
 
