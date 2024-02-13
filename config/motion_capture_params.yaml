@@ -1,4 +1,3 @@
-publish_frequency: 120.0
 sphere_radious: 0.35
 frame_id: world
 motion_generator:
@@ -6,6 +5,8 @@ motion_generator:
     x: 0.0
     y: 0.0
     z: 0.8
-  axis: x
-  mag: 0.4
-  frequency: 0.5
+  motion:
+    axis: x
+    mag: 0.4
+    frequency: 0.5
+  publish_frequency: 120.0

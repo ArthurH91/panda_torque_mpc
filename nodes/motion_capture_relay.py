@@ -43,10 +43,10 @@ class MoCapRelay:
         self._offset_y = rospy.get_param(f"~motion_generator/offset/y", 0.0)
         self._offset_z = rospy.get_param(f"~motion_generator/offset/z", 1.0)
 
-        self._motion_axis = rospy.get_param("~motion_generator/axis", "x")
-        self._motion_mag = rospy.get_param("~motion_generator/mag", 0.1)
-        self._motion_freq = rospy.get_param("~motion_generator/frequency", 1.0)
-        self._publish_frequency = rospy.get_param("~publish_frequency", 120.0)
+        self._motion_axis = rospy.get_param("~motion_generator/motion/axis", "x")
+        self._motion_mag = rospy.get_param("~motion_generator/motion/mag", 0.1)
+        self._motion_freq = rospy.get_param("~motion_generator/motion/frequency", 1.0)
+        self._publish_frequency = rospy.get_param("~motion_generator/publish_frequency", 120.0)
 
         # -------------------------------
         #   TF2 subscribers
@@ -84,7 +84,7 @@ class MoCapRelay:
 
     def _sine_pub_cb(self, event: rospy.timer.TimerEvent) -> None:
         ps = PoseStamped(
-            header=Header(frame_id=self._motion_frame_id, stamp=rospy.Time.now()),
+            header=Header(frame_id=self._target_frame_id, stamp=rospy.Time.now()),
             pose=Pose(
                 position=Point(x=self._offset_x, y=self._offset_y, z=self._offset_z),
                 orientation=Quaternion(),
@@ -99,7 +99,6 @@ class MoCapRelay:
 
     def _mocap_subscription_cb(self, data: PoseStamped) -> None:
         try:
-            # pose_stamped = tf2_geometry_msgs.PoseStamped(data)
             converted_pose = self._tf_buffer.transform(
                 data,
                 self._target_frame_id,
