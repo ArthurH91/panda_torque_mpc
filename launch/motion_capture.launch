@@ -10,12 +10,12 @@
     </node>
     
     <node pkg="tf2_ros" type="static_transform_publisher" name="natnet_to_world_broadcaster"
-        args="0.0 0.0 0.0 0.0 0.0 0.0 calibration_square world" />
+        args="-0.76 -0.865 0.30 0.0 3.14 -1.57 calibration_square world" />
 
-    <include file="$(find natnet_ros_cpp)/launch/natnet_ros.launch">
+    <!-- <include file="$(find natnet_ros_cpp)/launch/natnet_ros.launch">
         <arg name="clientIP" value="140.93.1.220"/>
         <arg name="serverIP" value="140.93.16.94"/>
         <arg name="serverType" value="unicast"/>
         <arg name="globalFrame" value="natnet_link"/>
-    </include>
+    </include> -->
 </launch>
