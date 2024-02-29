@@ -1,3 +1,4 @@
+#include <boost/smart_ptr/shared_ptr.hpp>
 #include <string>
 #include <cassert>
  
@@ -132,12 +133,8 @@ namespace panda_torque_mpc
             std::cout << "not right61: " << std::endl;
 
             // Building the GeometryModel
-            auto collision_model = boost::make_shared<pinocchio::GeometryModel>();
-            std::cout << "not right62: " << std::endl;
-            std::cout << "not right621: "<< urdf_path << std::endl;
-
-            pinocchio::urdf::buildGeom(model_pin_, urdf_path, pinocchio::COLLISION, *collision_model);
-            std::cout << "not right63: " << std::endl;
+            boost::shared_ptr<pinocchio::GeometryModel> collision_model = boost::make_shared<pinocchio::GeometryModel>();
+            collision_model = loadPandaGeometryModel(model_pin_);
 
             double radius = 0.35/2.0;
             std::cout << "not right64: " << std::endl;
