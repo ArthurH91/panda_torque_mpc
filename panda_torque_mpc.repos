@@ -38,3 +38,8 @@ repositories:
     type: git
     url: https://github.com/Gepetto/example-robot-data
     version: v4.1.0
+
+  vcs_repos/natnet_ros_cpp:
+    type: git
+    url: https://github.com/L2S-lab/natnet_ros_cpp
+    version: v1.2.0

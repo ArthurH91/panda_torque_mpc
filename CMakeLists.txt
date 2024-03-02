@@ -154,6 +154,7 @@ add_dependencies(crocoddyl_motion_server_node panda_torque_mpc_generate_messages
 # Install launch files
 install(FILES
   launch/franka_control.launch
+  launch/motion_capture.launch
   launch/move_to_start.launch
   launch/pose_publisher.launch
   launch/real_controllers.launch
@@ -170,6 +171,7 @@ install(FILES
   config/calibrated-params.yaml
   config/controller_configs.yaml
   config/franka_control_node.yaml
+  config/motion_capture_params.yaml
   config/pose_publisher_params.yaml
   config/start_joint_pose.yaml
   DESTINATION
@@ -178,6 +180,7 @@ install(FILES
 
 # Install python nodes
 install(PROGRAMS
+  nodes/motion_capture_relay.py
   nodes/move_to_start.py
   nodes/pose_publisher.py
   DESTINATION

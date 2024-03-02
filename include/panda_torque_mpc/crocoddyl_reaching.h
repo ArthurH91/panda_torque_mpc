@@ -64,7 +64,7 @@ namespace panda_torque_mpc
             // dummy constructor necessary to use this class as a member variable directly
         }
 
-        CrocoddylReaching(pin::Model _model_pin, const boost::shared_ptr<pin::GeometryModel>& _collision_model ,CrocoddylConfig _config);
+        CrocoddylReaching(pin::Model _model_pin, const boost::shared_ptr<pin::GeometryModel>& _collision_model, CrocoddylConfig& _config);
         // CrocoddylReaching(pin::Model _model_pin, CrocoddylConfig _config);
 
         void set_ee_ref_translation(Eigen::Vector3d trans, bool is_active=true);
@@ -76,6 +76,8 @@ namespace panda_torque_mpc
         void set_ee_ref_placement(pin::SE3 placement, bool is_active=true, double uniform_weight_scaling=1.0);
 
         void set_posture_ref(Eigen::VectorXd x0);
+
+        void change_obstacle_pose(const pin::SE3& pose, const std::string& geom_name);
 
         // boost::shared_ptr<crocoddyl::SolverFDDP> ocp_;
         // boost::shared_ptr<mim_solvers::SolverSQP> ocp_;
@@ -95,10 +97,11 @@ namespace panda_torque_mpc
         bool posture_set_;
 
 
-    bool valid_pbe();
-    bool solve(std::vector<Eigen::Matrix<double, -1, 1>> xs_init, std::vector<Eigen::Matrix<double, -1, 1>> us_init);
-    Vector7d get_tau_ff() const;
-    Eigen::MatrixXd get_ricatti_mat() const;
+        bool valid_pbe();
+        bool solve(std::vector<Eigen::Matrix<double, -1, 1>> xs_init, std::vector<Eigen::Matrix<double, -1, 1>> us_init);
+        Vector7d get_tau_ff() const;
+        Eigen::MatrixXd get_ricatti_mat() const;
+        boost::shared_ptr<pin::GeometryModel> collision_model_;
 
     };
 
