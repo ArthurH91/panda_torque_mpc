@@ -125,7 +125,7 @@ namespace panda_torque_mpc
             std::string urdf_path = ros::package::getPath("panda_torque_mpc") + "/urdf/robot.urdf";
 
             // Building the GeometryModel
-            boost::shared_ptr<pinocchio::GeometryModel> collision_model = boost::make_shared<pinocchio::GeometryModel>();
+            auto collision_model = boost::make_shared<pinocchio::GeometryModel>();
             collision_model = loadPandaGeometryModel(model_pin_);
 
             double radius = 0.35/2.0;
