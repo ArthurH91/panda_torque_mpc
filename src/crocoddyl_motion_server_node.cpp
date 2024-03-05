@@ -57,14 +57,12 @@ namespace panda_torque_mpc
                           std::string ocp_solve_time_topic_pub
                           )
         {
-            std::cout << "not right: " << std::endl;
             bool params_success = true;
             ///////////////////
             // Load parameters
             ///////////////////
             std::string arm_id;
             params_success = get_param_error_tpl<std::string>(nh, arm_id, "arm_id") && params_success;
-            std::cout << "not right1: " << std::endl;
 
             // Croco params
             int nb_shooting_nodes, nb_iterations_max, max_qp_iter;
@@ -72,7 +70,6 @@ namespace panda_torque_mpc
             std::vector<double> diag_frame_vel, diag_q_reg_running, diag_v_reg_running, diag_u_reg_running, armature;
             std::vector<double> pose_e_c, pose_c_o_ref;  // px,py,pz, qx,qy,qz,qw
             bool reference_is_placement;
-            std::cout << "not right2: " << std::endl;
 
             params_success = get_param_error_tpl<int>(nh, nb_shooting_nodes, "nb_shooting_nodes") && params_success;
             params_success = get_param_error_tpl<double>(nh, dt_ocp, "dt_ocp") && params_success;
@@ -116,54 +113,39 @@ namespace panda_torque_mpc
             params_success = get_param_error_tpl<std::string>(nh, ee_frame_name_, "ee_frame_name") && params_success;
 
             
-            std::cout << "not right3: " << std::endl;
-
             if (!params_success)
             {
                 throw std::invalid_argument("CrocoMotionServer: check the your ROS parameters");
             }
-            std::cout << "not right4: " << std::endl;
 
             model_pin_ = loadPandaPinocchio();
             data_pin_ = pin::Data(model_pin_);
-            std::cout << "not right5: " << std::endl;
 
             // Creating the collision model
             std::string urdf_path = ros::package::getPath("panda_torque_mpc") + "/urdf/robot.urdf";
-            std::cout << "not right61: " << std::endl;
 
             // Building the GeometryModel
             boost::shared_ptr<pinocchio::GeometryModel> collision_model = boost::make_shared<pinocchio::GeometryModel>();
             collision_model = loadPandaGeometryModel(model_pin_);
 
             double radius = 0.35/2.0;
-            std::cout << "not right64: " << std::endl;
 
             auto geometry = pinocchio::GeometryObject::CollisionGeometryPtr(new hpp::fcl::Sphere(radius));
-            std::cout << "not right7: " << std::endl;
 
             pinocchio::SE3 obstacle_pose(Eigen::Quaterniond (1.,0.,0.,0.), Eigen::Vector3d (0,0,0.825));
             // pinocchio::SE3 obstacle_pose;
             // obstacle_pose.setIdentity();
             // obstacle_pose.trans << 0., 0., 0.;
-            std::cout << "not right8: " << std::endl;
 
             pinocchio::GeometryObject obstacle("obstacle", 0,0, geometry, obstacle_pose);
             collision_model->addGeometryObject(obstacle);
-            std::cout << "not right9: " << std::endl;
 
 
             assertm(collision_model->getGeometryId("obstacle") < collision_model->geometryObjects.size(), "The index of the obstacle is not right.");
             assertm(collision_model->getGeometryId("panda_leftfinger_0") < collision_model->geometryObjects.size(), "The index of the panda_leftfinger_0 is not right.");
             assertm(collision_model->getGeometryId("panda_rightfinger_0") < collision_model->geometryObjects.size(), "The index of the panda_rightfinger_0 is not right.");
 
-            std::cout << "not right10: " << std::endl;
-
-            std::cout << "right: "<<collision_model->getGeometryId("panda_rightfinger_0") << std::endl;
-            std::cout << "left: "<<collision_model->getGeometryId("panda_leftfinger_0") << std::endl;
-
             //   Print out the placement of each collision geometry object
-            std::cout << *collision_model<< std::endl;
 
             collision_model->addCollisionPair(pinocchio::CollisionPair(collision_model->getGeometryId("obstacle"),
                 collision_model->getGeometryId("panda_leftfinger_0")));
@@ -588,16 +570,12 @@ namespace panda_torque_mpc
 int main(int argc, char **argv)
 {
 
-    std::cout << "OK1: "<< std::endl;
     ros::init(argc, argv, "crocoddyl_motion_server_node");
-    std::cout << "OK2: "<< std::endl;
 
     ros::NodeHandle nh;
-    std::cout << "OK3: "<< std::endl;
 
     std::string robot_sensors_topic_sub = "robot_sensors";
     std::string control_topic_pub = "motion_server_control";
-    std::cout << "OK4: "<< std::endl;
 
     std::string absolute_pose_ref_topic_sub = "absolute_pose_ref";  // ABSOLUTE REFERENCE DEMO
     std::string motion_capture_pose_ref_topic_sub = "motion_capture_pose_ref";  // MOCAP DEMO
@@ -608,7 +586,6 @@ int main(int argc, char **argv)
     std::string cam_pose_error_topic_pub = "cam_pose_error";
     std::string ee_pose_error_topic_pub = "ee_pose_error";
     std::string ocp_solve_time_topic_pub = "ocp_solve_time";
-    std::cout << "OK5: "<< std::endl;
 
     auto motion_server = panda_torque_mpc::CrocoMotionServer(
                             nh, 
@@ -624,7 +601,6 @@ int main(int argc, char **argv)
                             ee_pose_error_topic_pub,
                             ocp_solve_time_topic_pub
                             );
-    std::cout << "OK6: "<< std::endl;
 
     int freq_solve;
     int success_read = panda_torque_mpc::get_param_error_tpl<int>(nh, freq_solve, "freq_solve");
