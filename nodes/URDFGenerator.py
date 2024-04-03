@@ -95,14 +95,14 @@ class URDFGenerator:
         urdf += "</link>"
         return urdf
 
-    def generate_cylinder(self, name, radius, length, translation=(0, 0, 0), rotation=(0, 0, 0), quaternion=None, include_collision=True):
+    def generate_cylinder(self, name, radius, halfLength, translation=(0, 0, 0), rotation=(0, 0, 0), quaternion=None, include_collision=True):
         """
         Generates URDF syntax for a cylinder.
 
         Parameters:
             name (str): Name of the cylinder.
             radius (float): Radius of the cylinder.
-            length (float): Length of the cylinder.
+            halfLength (float): halfLength of the cylinder.
             translation (tuple): Translation of the cylinder in (x, y, z).
             rotation (tuple): Rotation of the cylinder in (roll, pitch, yaw) (if quaternion is not provided).
             quaternion (tuple): Quaternion array in (x, y, z, w) format (if rotation is not provided).
@@ -118,16 +118,15 @@ class URDFGenerator:
         <link name="{name}_link">
             <visual>
                 <geometry>
-                    <cylinder radius="{radius}" length="{length}"/>
+                    <cylinder radius="{radius}" length="{2*halfLength}"/>
                 </geometry>
                 <origin xyz="{translation[0]} {translation[1]} {translation[2]}" rpy="{rotation[0]} {rotation[1]} {rotation[2]}"/>
-            </visual>
-        """
+            </visual>"""
         if include_collision:
             urdf += f"""
             <collision>
                 <geometry>
-                    <cylinder radius="{radius}" length="{length}"/>
+                    <cylinder radius="{radius}" length="{2*halfLength}"/>
                 </geometry>
                 <origin xyz="{translation[0]} {translation[1]} {translation[2]}" rpy="{rotation[0]} {rotation[1]} {rotation[2]}"/>
             </collision>
@@ -135,6 +134,76 @@ class URDFGenerator:
         urdf += "</link>"
         return urdf
 
+
+    def generate_capsule(self, name, radius, halfLength, translation=(0, 0, 0), rotation=(0, 0, 0), quaternion=None, include_collision=True):
+            """
+            Generates URDF syntax for a capsule (combination of two spheres and one cylinder).
+
+            Parameters:
+                name (str): Name of the capsule.
+                radius (float): Radius of the capsule.
+                length (float): Length of the cylinder part of the capsule.
+                translation (tuple): Translation of the capsule in (x, y, z).
+                rotation (tuple): Rotation of the capsule in (roll, pitch, yaw) (if quaternion is not provided).
+                quaternion (tuple): Quaternion array in (x, y, z, w) format (if rotation is not provided).
+                include_collision (bool): Whether to include collision part in URDF.
+
+            Returns:
+                str: URDF syntax for the capsule.
+            """
+            if quaternion is not None:
+                rotation = self.quaternion_to_rpy(quaternion)
+
+            urdf = f"""
+            <link name="{name}_link">
+                <visual>
+                    <geometry>
+                        <cylinder radius="{radius}" length="{2 * halfLength}"/>
+                    </geometry>
+                    <origin xyz="{translation[0]} {translation[1]} {translation[2]}" rpy="{rotation[0]} {rotation[1]} {rotation[2]}"/>
+                </visual>"""
+
+            if include_collision:
+                urdf += f"""
+                <collision>
+                    <geometry>
+                        <cylinder radius="{radius}" length="{2 * halfLength}"/>
+                    </geometry>
+                    <origin xyz="{translation[0]} {translation[1]} {translation[2]}" rpy="{rotation[0]} {rotation[1]} {rotation[2]}"/>
+                </collision>"""
+
+            # Adding spheres on the ends of the capsule
+            urdf += f"""
+                <visual>
+                    <geometry>
+                        <sphere radius="{radius}"/>
+                    </geometry>
+                    <origin xyz="{translation[0]} {translation[1]} {translation[2] + halfLength}" rpy="0 0 0"/>
+                </visual>
+                <visual>
+                    <geometry>
+                        <sphere radius="{radius}"/>
+                    </geometry>
+                    <origin xyz="{translation[0]} {translation[1]} {translation[2] - halfLength}" rpy="0 0 0"/>
+                </visual>"""
+
+            if include_collision:
+                urdf += f"""
+                <collision>
+                    <geometry>
+                        <sphere radius="{radius}"/>
+                    </geometry>
+                    <origin xyz="{translation[0]} {translation[1]} {translation[2] + halfLength}" rpy="0 0 0"/>
+                </collision>
+                <collision>
+                    <geometry>
+                        <sphere radius="{radius}"/>
+                    </geometry>
+                    <origin xyz="{translation[0]} {translation[1]} {translation[2] - halfLength}" rpy="0 0 0"/>
+                </collision>"""
+            
+            urdf += "\n</link>"
+            return urdf
 
 if __name__ == "__main__":
     
