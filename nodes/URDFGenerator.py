@@ -20,7 +20,7 @@ class URDFGenerator:
         yaw = math.atan2(2 * (w * z + x * y), 1 - 2 * (y**2 + z**2))
         return roll, pitch, yaw
 
-    def generate_box(self, name, dimensions, translation=(0, 0, 0), rotation=(0, 0, 0), quaternion=None, include_collision=True):
+    def generate_box(self, name, dimensions, quaternion=None, include_collision=True):
         """
         Generates URDF syntax for a box.
 
@@ -44,7 +44,6 @@ class URDFGenerator:
                 <geometry>
                     <box size="{dimensions[0]} {dimensions[1]} {dimensions[2]}"/>
                 </geometry>
-                <origin xyz="{translation[0]} {translation[1]} {translation[2]}" rpy="{rotation[0]} {rotation[1]} {rotation[2]}"/>
             </visual>"""
         if include_collision:
             urdf += f"""
@@ -52,13 +51,12 @@ class URDFGenerator:
                 <geometry>
                     <box size="{dimensions[0]} {dimensions[1]} {dimensions[2]}"/>
                 </geometry>
-                <origin xyz="{translation[0]} {translation[1]} {translation[2]}" rpy="{rotation[0]} {rotation[1]} {rotation[2]}"/>
             </collision>
             """
         urdf += "</link>"
         return urdf
 
-    def generate_sphere(self, name, radius, translation=(0, 0, 0), rotation=(0, 0, 0), quaternion=None, include_collision=True):
+    def generate_sphere(self, name, radius, quaternion=None, include_collision=True):
         """
         Generates URDF syntax for a sphere.
 
@@ -81,7 +79,6 @@ class URDFGenerator:
                 <geometry>
                     <sphere radius="{radius}"/>
                 </geometry>
-                <origin xyz="{translation[0]} {translation[1]} {translation[2]}" rpy="{rotation[0]} {rotation[1]} {rotation[2]}"/>
             </visual>"""
         if include_collision:
             urdf += f"""
@@ -89,13 +86,12 @@ class URDFGenerator:
                 <geometry>
                     <sphere radius="{radius}"/>
                 </geometry>
-                <origin xyz="{translation[0]} {translation[1]} {translation[2]}" rpy="{rotation[0]} {rotation[1]} {rotation[2]}"/>
             </collision>
             """
         urdf += "</link>"
         return urdf
 
-    def generate_cylinder(self, name, radius, halfLength, translation=(0, 0, 0), rotation=(0, 0, 0), quaternion=None, include_collision=True):
+    def generate_cylinder(self, name, radius, halfLength, quaternion=None, include_collision=True):
         """
         Generates URDF syntax for a cylinder.
 
@@ -120,7 +116,6 @@ class URDFGenerator:
                 <geometry>
                     <cylinder radius="{radius}" length="{2*halfLength}"/>
                 </geometry>
-                <origin xyz="{translation[0]} {translation[1]} {translation[2]}" rpy="{rotation[0]} {rotation[1]} {rotation[2]}"/>
             </visual>"""
         if include_collision:
             urdf += f"""
@@ -128,14 +123,13 @@ class URDFGenerator:
                 <geometry>
                     <cylinder radius="{radius}" length="{2*halfLength}"/>
                 </geometry>
-                <origin xyz="{translation[0]} {translation[1]} {translation[2]}" rpy="{rotation[0]} {rotation[1]} {rotation[2]}"/>
             </collision>
             """
         urdf += "</link>"
         return urdf
 
 
-    def generate_capsule(self, name, radius, halfLength, translation=(0, 0, 0), rotation=(0, 0, 0), quaternion=None, include_collision=True):
+    def generate_capsule(self, name, radius, halfLength, quaternion=None, include_collision=True):
             """
             Generates URDF syntax for a capsule (combination of two spheres and one cylinder).
 
@@ -160,7 +154,6 @@ class URDFGenerator:
                     <geometry>
                         <cylinder radius="{radius}" length="{2 * halfLength}"/>
                     </geometry>
-                    <origin xyz="{translation[0]} {translation[1]} {translation[2]}" rpy="{rotation[0]} {rotation[1]} {rotation[2]}"/>
                 </visual>"""
 
             if include_collision:
@@ -169,7 +162,6 @@ class URDFGenerator:
                     <geometry>
                         <cylinder radius="{radius}" length="{2 * halfLength}"/>
                     </geometry>
-                    <origin xyz="{translation[0]} {translation[1]} {translation[2]}" rpy="{rotation[0]} {rotation[1]} {rotation[2]}"/>
                 </collision>"""
 
             # Adding spheres on the ends of the capsule
@@ -178,13 +170,11 @@ class URDFGenerator:
                     <geometry>
                         <sphere radius="{radius}"/>
                     </geometry>
-                    <origin xyz="{translation[0]} {translation[1]} {translation[2] + halfLength}" rpy="0 0 0"/>
                 </visual>
                 <visual>
                     <geometry>
                         <sphere radius="{radius}"/>
                     </geometry>
-                    <origin xyz="{translation[0]} {translation[1]} {translation[2] - halfLength}" rpy="0 0 0"/>
                 </visual>"""
 
             if include_collision:
@@ -193,13 +183,11 @@ class URDFGenerator:
                     <geometry>
                         <sphere radius="{radius}"/>
                     </geometry>
-                    <origin xyz="{translation[0]} {translation[1]} {translation[2] + halfLength}" rpy="0 0 0"/>
                 </collision>
                 <collision>
                     <geometry>
                         <sphere radius="{radius}"/>
                     </geometry>
-                    <origin xyz="{translation[0]} {translation[1]} {translation[2] - halfLength}" rpy="0 0 0"/>
                 </collision>"""
             
             urdf += "\n</link>"
@@ -210,4 +198,4 @@ if __name__ == "__main__":
     u = URDFGenerator()
     name = "obstacle"
     radius = 1
-    print(u.generate_box(name, (1,1,1), (-1,2,1), (1,1,1), include_collision=True))
+    print(u.generate_box(name, (1,1,1), include_collision=True))
