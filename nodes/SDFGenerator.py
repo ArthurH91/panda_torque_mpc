@@ -3,23 +3,38 @@ import random
 
 class SDFGenerator:
     def __init__(self):
-        pass
+        self._available_colors = [
+            "Gazebo/Red",
+            "Gazebo/Blue",
+            "Gazebo/Green",
+            "Gazebo/Yellow",
+            "Gazebo/Orange",
+            "Gazebo/Purple",
+            "Gazebo/Cyan",
+            "Gazebo/Magenta",
+            "Gazebo/Pink",
+            "Gazebo/Brown",
+            "Gazebo/White",
+            "Gazebo/Black",
+            "Gazebo/Gray",
+            "Gazebo/LightGrey",
+            "Gazebo/DarkGrey",
+            "Gazebo/Olive",
+            "Gazebo/Teal"
+        ]
 
     def _generate_random_color(self):
-            """
-            Generates a random color in RGB format.
+        """
+        Generates a random color from the available colors in Gazebo materials.
 
-            Returns:
-                tuple: Random color in (red, green, blue) format.
-            """
-            red = random.randint(0, 255)
-            green = random.randint(0, 255)
-            blue = random.randint(0, 255)
-            return red, green, blue
+        Returns:
+            str: Random color name.
+        """
+        return random.choice(self._available_colors)
 
     def generate_box(self, name, size):
         # Generate random color
-        red, green, blue = self._generate_random_color()
+        color = self._generate_random_color()
 
         sdf = f"""
         <model name="{name}">
@@ -46,7 +61,10 @@ class SDFGenerator:
                         </box>
                     </geometry>
                     <material>
-                        <color rgba="{red/255} {green/255} {blue/255} 1"/>
+                        <script>
+                            <uri>file://media/materials/scripts/gazebo.material</uri>
+                            <name>{color}</name>
+                        </script>
                     </material>
                 </visual>
                 <collision name="collision">
@@ -76,7 +94,7 @@ class SDFGenerator:
         Returns:
             str: SDF syntax for the sphere.
         """           
-        red, green, blue = self._generate_random_color()
+        color = self._generate_random_color()
 
         sdf = f"""
         <sdf version="1.7">
@@ -104,7 +122,10 @@ class SDFGenerator:
                         </sphere>
                     </geometry>
                     <material>
-                        <color rgba="{red/255} {green/255} {blue/255} 1"/>
+                        <script>
+                            <uri>file://media/materials/scripts/gazebo.material</uri>
+                            <name>{color}</name>
+                        </script>
                     </material>
                 </visual>
                 <collision name="collision">
@@ -122,7 +143,7 @@ class SDFGenerator:
 
     def generate_cylinder(self, name, radius, length):
         # Generate random color
-        red, green, blue = self._generate_random_color()
+        color = self._generate_random_color()
 
         sdf = f"""
         <model name="{name}">
@@ -150,7 +171,10 @@ class SDFGenerator:
                         </cylinder>
                     </geometry>
                     <material>
-                        <color rgba="{red/255} {green/255} {blue/255} 1"/>
+                        <script>
+                            <uri>file://media/materials/scripts/gazebo.material</uri>
+                            <name>{color}</name>
+                        </script>
                     </material>
                 </visual>
                 <collision name="collision">
