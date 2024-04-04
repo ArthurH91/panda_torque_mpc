@@ -1,15 +1,15 @@
-obstacle1:
-    type: "sphere"
-    radius: 0.175,
-    translation: [0,0,0.8]  # tx,ty,tz
-    rotation: [0, 0, 0, 1] #qx,qy,qz,qw 
-# obstacle2:
-#     type: "cylinder"
+# obstacle1:
+#     type: "sphere"
 #     radius: 0.175,
-#     halfLength: 0.1
 #     translation: [0,0,0.8]  # tx,ty,tz
 #     rotation: [0, 0, 0, 1] #qx,qy,qz,qw 
-# obstacle3:
+obstacle1:
+    type: "cylinder"
+    radius: 0.175
+    halfLength: 0.1
+    translation: [0,0,0.8]  # tx,ty,tz
+    rotation: [0, 0, 0, 1] #qx,qy,qz,qw 
+# obstacle1:
 #     type: "box"
 #     x: 0.175,
 #     y: 0.1,
