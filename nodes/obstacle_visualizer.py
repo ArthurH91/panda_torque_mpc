@@ -29,19 +29,23 @@ class ObstaclesVisualizer:
 
         self._obstacles_infos = {}
         self._obstacles = []
-        while rospy.has_param("obstacle" + str(obstacle_idx)):
-            obstacle_name = "obstacle" + str(obstacle_idx)
+        while rospy.has_param("~obstacle" + str(obstacle_idx)):
+            obstacle_name = "~obstacle" + str(obstacle_idx)
             self._obstacles_infos.update(
                 {obstacle_name: rospy.get_param(obstacle_name)}
             )
-            print(self._obstacles_infos)
+            print(f"rospy.get_param(obstacle_name): {rospy.get_param(obstacle_name)}")
+            print(f"self._obstacles_infos: {self._obstacles_infos}")
 
         urdf_generator = URDFGenerator()
         self._spawn_model_requests = []
         self._markers = MarkerArray()
         header = Header(frame_id="world", stamp=rospy.Time.now())
-
+        print(f"self._obstacles_infos: {self._obstacles_infos}")
         for iter, key, obstacle in enumerate(self._obstacles_infos.items()):
+            print(f"iter: {iter}")
+            print(f"key: {key}")
+            print(f"obstacle: {obstacle}")
             pose=self._parse_poses(obstacle)
             sp_req = SpawnModelRequest(
                 model_name = key,
