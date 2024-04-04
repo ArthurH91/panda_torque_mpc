@@ -73,22 +73,24 @@ class URDFGenerator:
         """
         if quaternion is not None:
             rotation = self._quaternion_to_rpy(quaternion)
-        urdf = f"""
-        <link name="{name}_link">
-            <visual>
-                <geometry>
-                    <sphere radius="{radius}"/>
-                </geometry>
-            </visual>"""
+        urdf = f"""<robot name="simple_sphere">
+            <link name="{name}_link">
+                <visual>
+                    <geometry>
+                        <sphere radius="{radius}"/>
+                    </geometry>
+                </visual>"""
         if include_collision:
             urdf += f"""
             <collision>
                 <geometry>
                     <sphere radius="{radius}"/>
                 </geometry>
-            </collision>
-            """
-        urdf += "</link>"
+            </collision>"""
+        urdf += """
+            </link>
+        </robot name=>
+        """
         return urdf
 
     def generate_cylinder(self, name, radius, halfLength, quaternion=None, include_collision=True):

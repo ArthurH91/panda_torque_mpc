@@ -35,25 +35,21 @@ class ObstaclesVisualizer:
                 {obstacle_name: rospy.get_param(obstacle_name)}
             )
             obstacle_idx += 1
-            print(f"rospy.get_param(obstacle_name): {rospy.get_param(obstacle_name)}")
-            print(f"self._obstacles_infos: {self._obstacles_infos}")
 
         urdf_generator = URDFGenerator()
         self._spawn_model_requests = []
         self._markers = MarkerArray()
         header = Header(frame_id="world", stamp=rospy.Time.now())
-        print(f"self._obstacles_infos: {self._obstacles_infos}")
         for iter, (key, obstacle) in enumerate(self._obstacles_infos.items()):
-            print(f"iter: {iter}")
-            print(f"key: {key}")
-            print(f"obstacle: {obstacle}")
             pose=self._parse_poses(obstacle)
+ 
             sp_req = SpawnModelRequest(
-                model_name = key,
+                model_name = key[1:],
                 robot_namespace = "",
                 initial_pose = pose,
                 reference_frame = header.frame_id
             )
+            
 
             m = Marker(
                 header=header,
@@ -68,21 +64,22 @@ class ObstaclesVisualizer:
             if obstacle["type"] == "sphere":
                 m.scale = Vector3(**dict(zip("xyz", [obstacle["radius"]] * 3)))
                 m.type = Marker.SPHERE
-                sp_req.model_xml = urdf_generator.generate_sphere(key, obstacle["radius"])
-            
+                sp_req.model_xml = urdf_generator.generate_sphere(key[1:], obstacle["radius"])
+                print(f"key: {key[1:]}")
+                print(f"sp_req.model_xml: {sp_req.model_xml}")
             self._spawn_model_requests.append(sp_req)
             self._markers.markers.append(m)
 
 
-        # rospy.wait_for_service("/gazebo/spawn_urdf_model")
-        # try:
-        #     model_spawner = rospy.ServiceProxy("/gazebo/spawn_urdf_model", SpawnModel)
-        #     for sp_req in self._spawn_model_requests:
-        #         resp = model_spawner(sp_req)
-        #         if not resp.success:
-        #             rospy.logerr("spawning model didn't work.")
-        # except rospy.ServiceException as e:
-        #     print("Service call failed: %s" % e)
+        rospy.wait_for_service("/gazebo/spawn_urdf_model")
+        try:
+            model_spawner = rospy.ServiceProxy("/gazebo/spawn_urdf_model", SpawnModel)
+            for sp_req in self._spawn_model_requests:
+                resp = model_spawner(sp_req)
+                if not resp.success:
+                    rospy.logerr("spawning model didn't work.")
+        except rospy.ServiceException as e:
+            print("Service call failed: %s" % e)
 
         # -------------------------------
         #   Publishers
