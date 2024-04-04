@@ -10,7 +10,7 @@ from tf.transformations import quaternion_from_euler
 from geometry_msgs.msg import Point, Quaternion, Vector3
 from visualization_msgs.msg import Marker, MarkerArray
 from std_msgs.msg import ColorRGBA, Header
-from URDFGenerator import URDFGenerator
+from SDFGenerator import SDFGenerator
 
 from gazebo_msgs.srv import SpawnModel, SpawnModelRequest
 
@@ -36,7 +36,7 @@ class ObstaclesVisualizer:
             )
             obstacle_idx += 1
 
-        urdf_generator = URDFGenerator()
+        sdf_generator = SDFGenerator()
         self._spawn_model_requests = []
         self._markers = MarkerArray()
         header = Header(frame_id="world", stamp=rospy.Time.now())
@@ -64,7 +64,9 @@ class ObstaclesVisualizer:
             if obstacle["type"] == "sphere":
                 m.scale = Vector3(**dict(zip("xyz", [obstacle["radius"]] * 3)))
                 m.type = Marker.SPHERE
-                sp_req.model_xml = urdf_generator.generate_sphere(key[1:], obstacle["radius"])
+                sp_req.model_xml = sdf_generator.generate_sphere(key[1:], obstacle["radius"])
+
+                
                 print(f"key: {key[1:]}")
                 print(f"sp_req.model_xml: {sp_req.model_xml}")
             self._spawn_model_requests.append(sp_req)
@@ -73,7 +75,7 @@ class ObstaclesVisualizer:
 
         rospy.wait_for_service("/gazebo/spawn_urdf_model")
         try:
-            model_spawner = rospy.ServiceProxy("/gazebo/spawn_urdf_model", SpawnModel)
+            model_spawner = rospy.ServiceProxy("/gazebo/spawn_sdf_model", SpawnModel)
             for sp_req in self._spawn_model_requests:
                 resp = model_spawner(sp_req)
                 if not resp.success:
