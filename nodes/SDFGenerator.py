@@ -37,9 +37,10 @@ class SDFGenerator:
         color = self._generate_random_color()
 
         sdf = f"""
+        <sdf version="1.7">
         <model name="{name}">
             <static>true</static>
-            <pose>0 0 .1 0 0 0</pose>
+            <pose>0 0 0 0 0 0</pose>
             <link name="{name}_link">
                 <inertial>
                     <mass>1.0</mass>
@@ -51,10 +52,10 @@ class SDFGenerator:
                         <iyz>0.0</iyz>
                         <izz>0.0</izz>
                     </inertia>
-                    <pose>0 0 .1 0 0 0</pose>
+                    <pose>0 0 0 0 0 0</pose>
                 </inertial>
                 <visual name="visual">
-                    <pose>0 0 .1 0 0 0</pose>
+                    <pose>0 0 0 0 0 0</pose>
                     <geometry>
                         <box>
                             <size>{size[0]} {size[1]} {size[2]}</size>
@@ -68,7 +69,7 @@ class SDFGenerator:
                     </material>
                 </visual>
                 <collision name="collision">
-                    <pose>0 0 .1 0 0 0</pose>
+                    <pose>0 0 0 0 0 0</pose>
                     <geometry>
                         <box>
                             <size>{size[0]} {size[1]} {size[2]}</size>
@@ -101,7 +102,7 @@ class SDFGenerator:
         <model name="{name}">
             <static>true</static>
             <link name="{name}_link">
-                <pose>0 0 .1 0 0 0</pose>
+                <pose>0 0 0 0 0 0</pose>
                 <inertial>
                     <mass>1.0</mass>
                     <inertia>
@@ -112,10 +113,10 @@ class SDFGenerator:
                         <iyz>0.0</iyz>
                         <izz>0.0</izz>
                     </inertia>
-                    <pose>0 0 .1 0 0 0</pose>
+                    <pose>0 0 0 0 0 0</pose>
                 </inertial>
                 <visual name="visual">
-                    <pose>0 0 .1 0 0 0</pose>
+                    <pose>0 0 0 0 0 0</pose>
                     <geometry>
                         <sphere>
                             <radius>{radius}</radius>
@@ -129,7 +130,7 @@ class SDFGenerator:
                     </material>
                 </visual>
                 <collision name="collision">
-                    <pose>0 0 .1 0 0 0</pose>
+                    <pose>0 0 0 0 0 0</pose>
                     <geometry>
                         <sphere>
                             <radius>{radius}</radius>
@@ -146,9 +147,10 @@ class SDFGenerator:
         color = self._generate_random_color()
 
         sdf = f"""
+        <sdf version="1.7">
         <model name="{name}">
             <static>true</static>
-            <pose>0 0 .1 0 0 0</pose>
+            <pose>0 0 0 0 0 0</pose>
             <link name="{name}_link">
                 <inertial>
                     <mass>1.0</mass>
@@ -160,10 +162,10 @@ class SDFGenerator:
                         <iyz>0.0</iyz>
                         <izz>0.0</izz>
                     </inertia>
-                    <pose>0 0 .1 0 0 0</pose>
+                    <pose>0 0 0 0 0 0</pose>
                 </inertial>
                 <visual name="visual">
-                    <pose>0 0 .1 0 0 0</pose>
+                    <pose>0 0 0 0 0 0</pose>
                     <geometry>
                         <cylinder>
                             <radius>{radius}</radius>
@@ -178,7 +180,7 @@ class SDFGenerator:
                     </material>
                 </visual>
                 <collision name="collision">
-                    <pose>0 0 .1 0 0 0</pose>
+                    <pose>0 0 0 0 0 0</pose>
                     <geometry>
                         <cylinder>
                             <radius>{radius}</radius>

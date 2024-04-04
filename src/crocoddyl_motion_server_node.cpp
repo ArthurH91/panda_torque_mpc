@@ -130,7 +130,9 @@ namespace panda_torque_mpc
 
             ObstacleParamsParser obstacle_parser(boost::make_shared<ros::NodeHandle>(pnh), collision_model);
             obstacle_parser.addCollisions();
-                                   
+            
+            std::cout << "cmodel: " << *collision_model << std::endl;
+
             if ((model_pin_.nq != 7) || (model_pin_.name != "panda"))
             {
                 ROS_ERROR_STREAM("Problem when loading the robot urdf");
@@ -541,7 +543,6 @@ namespace panda_torque_mpc
 
 int main(int argc, char **argv)
 {
-
     ros::init(argc, argv, "crocoddyl_motion_server_node");
 
     ros::NodeHandle nh;
