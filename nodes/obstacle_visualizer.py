@@ -34,6 +34,7 @@ class ObstaclesVisualizer:
             self._obstacles_infos.update(
                 {obstacle_name: rospy.get_param(obstacle_name)}
             )
+            obstacle_idx += 1
             print(f"rospy.get_param(obstacle_name): {rospy.get_param(obstacle_name)}")
             print(f"self._obstacles_infos: {self._obstacles_infos}")
 
@@ -42,7 +43,7 @@ class ObstaclesVisualizer:
         self._markers = MarkerArray()
         header = Header(frame_id="world", stamp=rospy.Time.now())
         print(f"self._obstacles_infos: {self._obstacles_infos}")
-        for iter, key, obstacle in enumerate(self._obstacles_infos.items()):
+        for iter, (key, obstacle) in enumerate(self._obstacles_infos.items()):
             print(f"iter: {iter}")
             print(f"key: {key}")
             print(f"obstacle: {obstacle}")
@@ -50,7 +51,7 @@ class ObstaclesVisualizer:
             sp_req = SpawnModelRequest(
                 model_name = key,
                 robot_namespace = "",
-                pose = pose,
+                initial_pose = pose,
                 reference_frame = header.frame_id
             )
 
@@ -73,15 +74,15 @@ class ObstaclesVisualizer:
             self._markers.markers.append(m)
 
 
-        rospy.wait_for_service("/gazebo/spawn_urdf_model")
-        try:
-            model_spawner = rospy.ServiceProxy("/gazebo/spawn_urdf_model", SpawnModel)
-            for sp_req in self._spawn_model_requests:
-                resp = model_spawner(sp_req)
-                if not resp.success:
-                    rospy.logerr("spawning model didn't work.")
-        except rospy.ServiceException as e:
-            print("Service call failed: %s" % e)
+        # rospy.wait_for_service("/gazebo/spawn_urdf_model")
+        # try:
+        #     model_spawner = rospy.ServiceProxy("/gazebo/spawn_urdf_model", SpawnModel)
+        #     for sp_req in self._spawn_model_requests:
+        #         resp = model_spawner(sp_req)
+        #         if not resp.success:
+        #             rospy.logerr("spawning model didn't work.")
+        # except rospy.ServiceException as e:
+        #     print("Service call failed: %s" % e)
 
         # -------------------------------
         #   Publishers
@@ -115,6 +116,7 @@ class ObstaclesVisualizer:
 
 
 def main():
+
     marker_publisher = ObstaclesVisualizer("obstacles_visualizer")
     rospy.spin()
 
