@@ -68,7 +68,7 @@ void ObstacleParamsParser::addCollisions() {
                      "config. Try to use "
                      "the ones for the shapes desired, such as 'radius' for "
                      "'sphere','x', 'y', 'z' for 'box' or 'halfLength' and "
-                     "'radius' for 'capsule'."
+                     "'radius' for 'cylinder'."
                   << std::endl;
         return;
       }
@@ -89,12 +89,12 @@ void ObstacleParamsParser::addCollisions() {
                      "config. Try to use "
                      "the ones for the shapes desired, such as 'radius' for "
                      "'sphere','x', 'y', 'z' for 'box' or 'halfLength' and "
-                     "'radius' for 'capsule'."
+                     "'radius' for 'cylinder'."
                   << std::endl;
         return;
       }
 
-    } else if (type == "capsule") {
+    } else if (type == "cylinder") {
       double radius;
       double halfLength;
       if (pnh_->hasParam(obstacle_name + "/radius") &&
@@ -102,11 +102,11 @@ void ObstacleParamsParser::addCollisions() {
         pnh_->getParam(obstacle_name + "/radius", radius);
         pnh_->getParam(obstacle_name + "/halfLength", halfLength);
         geometry = pinocchio::GeometryObject::CollisionGeometryPtr(
-            new hpp::fcl::Capsule(radius, halfLength));
+            new hpp::fcl::Cylinder(radius, halfLength));
       }
     } else {
       std::cerr << "No type or wrong type in the obstacle config. Try to use "
-                   "the one implemented, such as 'sphere', 'box' or 'capsule'."
+                   "the one implemented, such as 'sphere', 'box' or 'cylinder'."
                 << std::endl;
       return;
     }
