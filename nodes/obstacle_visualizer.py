@@ -74,7 +74,10 @@ class ObstaclesVisualizer:
                 m.scale = Vector3(x = obstacle["x"], y = obstacle["y"], z = obstacle["z"])
                 m.type = Marker.CUBE
                 sp_req.model_xml = sdf_generator.generate_box(key[1:], [obstacle["x"],obstacle["y"], obstacle["z"] ])
-                
+            if obstacle["type"] == "capsule":
+                m.scale = Vector3(x = obstacle["radius"], y = obstacle["radius"], z = obstacle["halfLength"])
+                m.type = Marker.CYLINDER
+                sp_req.model_xml = sdf_generator.generate_capsule(key[1:], obstacle["radius"],obstacle["halfLength"] )              
             print(f"key: {key[1:]}")
             print(f"sp_req.model_xml: {sp_req.model_xml}")
             self._spawn_model_requests.append(sp_req)

@@ -1,7 +1,7 @@
 obstacle1:
     type: "sphere"
     radius: 0.175
-    translation: [0.0,0.0,0.9]  # tx,ty,tz
+    translation: [0.0,0.0,2.9]  # tx,ty,tz
     rotation: [-0.599, 0.002,  0.759, -0.253] #qx,qy,qz,qw 
 obstacle2:
     type: "cylinder"
@@ -14,10 +14,16 @@ obstacle3:
     x: 0.175
     y: 0.1
     z: 0.3
-    translation: [0.0,0.0,0.8]  # tx,ty,tz
+    translation: [0.0,0.0,3.8]  # tx,ty,tz
     rotation: [-0.599, 0.002,  0.759, -0.253] #qx,qy,qz,qw 
+obstacle4:
+    type: "capsule"
+    radius: 0.175
+    halfLength: 0.1
+    translation: [0.0,0.0,0.8]  # tx,ty,tz
+    rotation: [ 0.770, -0.002, -0.606,  0.202] #qx,qy,qz,qw     
 collision_pairs: 
-    - ["panda_leftfinger_0", "obstacle1"]
-    - ["panda_rightfinger_0", "obstacle1"]
+    - ["panda_leftfinger_0", "obstacle4"]
+    - ["panda_rightfinger_0", "obstacle4"]
     - ["panda_leftfinger_0", "obstacle3"]
     - ["panda_rightfinger_0", "obstacle3"]

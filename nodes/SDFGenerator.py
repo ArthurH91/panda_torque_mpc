@@ -147,6 +147,104 @@ class SDFGenerator:
         return sdf      
 
 
+    def generate_capsule(self, name, radius, halfLength):
+        """
+        Generates SDF syntax for a capsule.
+
+        Parameters:
+            name (str): Name of the capsule.
+            radius (float): Radius of the capsule.
+            length (float): Length of the capsule.
+
+        Returns:
+            str: SDF syntax for the capsule.
+        """
+        color = self._generate_random_color()
+
+        sdf = f"""
+        <sdf version='1.4'>
+        <model name="{name}">
+            <static>true</static>
+            <pose>0 0 0 0 0 0</pose>
+            <link name="{name}_link">
+            
+                <!-- First sphere -->
+                <visual name="visual_sphere1">
+                    <pose>0 0 {halfLength} 0 0 0</pose>
+                    <geometry>
+                        <sphere>
+                            <radius>{radius}</radius>
+                        </sphere>
+                    </geometry>
+                    <material>
+                        <script>
+                            <uri>file://media/materials/scripts/gazebo.material</uri>
+                            <name>{color}</name>
+                        </script>
+                    </material>
+                </visual>
+                <collision name="collision_sphere1">
+                <pose>0 0 {halfLength} 0 0 0</pose>
+                    <geometry>
+                        <sphere>
+                            <radius>{radius}</radius>
+                        </sphere>
+                    </geometry>
+                </collision>
+
+                <!-- Cylinder -->
+                <visual name="visual_cylinder">
+                    <geometry>
+                        <cylinder>
+                            <radius>{radius}</radius>
+                            <length>{halfLength * 2}</length>
+                        </cylinder>
+                    </geometry>
+                    <material>
+                        <script>
+                            <uri>file://media/materials/scripts/gazebo.material</uri>
+                            <name>{color}</name>
+                        </script>
+                    </material>
+                </visual>
+                <collision name="collision_cylinder">
+                    <geometry>
+                        <cylinder>
+                            <radius>{radius}</radius>
+                            <length>{halfLength * 2}</length>
+                        </cylinder>
+                    </geometry>
+                </collision>
+
+                <!-- Second sphere -->
+                <visual name="visual_sphere2">
+                    <pose>0 0 -{halfLength} 0 0 0</pose> <!-- Move the sphere to the end of the capsule -->
+                    <geometry>
+                        <sphere>
+                            <radius>{radius}</radius>
+                        </sphere>
+                    </geometry>
+                    <material>
+                        <script>
+                            <uri>file://media/materials/scripts/gazebo.material</uri>
+                            <name>{color}</name>
+                        </script>
+                    </material>
+                </visual>
+                <collision name="collision_sphere2">
+                    <pose>0 0 -{halfLength} 0 0 0</pose> <!-- Move the sphere to the end of the capsule -->
+                    <geometry>
+                        <sphere>
+                            <radius>{radius}</radius>
+                        </sphere>
+                    </geometry>
+                </collision>
+            </link>
+        </model>
+        """
+        return sdf
+
+
 if __name__ == "__main__":
     
     u = SDFGenerator()
