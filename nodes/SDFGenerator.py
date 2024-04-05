@@ -10,17 +10,12 @@ class SDFGenerator:
             "Gazebo/Yellow",
             "Gazebo/Orange",
             "Gazebo/Purple",
-            "Gazebo/Cyan",
-            "Gazebo/Magenta",
-            "Gazebo/Pink",
-            "Gazebo/Brown",
             "Gazebo/White",
             "Gazebo/Black",
-            "Gazebo/Gray",
-            "Gazebo/LightGrey",
+            "Gazebo/Grey",
             "Gazebo/DarkGrey",
-            "Gazebo/Olive",
-            "Gazebo/Teal"
+            "Gazebo/Turquoise",
+            "Gazebo/Indigo"
         ]
 
     def _generate_random_color(self):
@@ -37,6 +32,7 @@ class SDFGenerator:
         color = self._generate_random_color()
 
         sdf = f"""
+            <sdf version='1.4'>
             <model name="{name}">
             <static>true</static>
             <pose>0 0 0 0 0 0</pose>
@@ -113,7 +109,7 @@ class SDFGenerator:
         """
         return sdf
 
-    def generate_cylinder(self, name, radius, length):
+    def generate_cylinder(self, name, radius, halfLength):
         # Generate random color
         color = self._generate_random_color()
 
@@ -127,7 +123,7 @@ class SDFGenerator:
                     <geometry>
                         <cylinder>
                             <radius>{radius}</radius>
-                            <length>{length}</length>
+                            <length>{halfLength *2}</length>
                         </cylinder>
                     </geometry>
                     <material>
@@ -141,7 +137,7 @@ class SDFGenerator:
                     <geometry>
                         <cylinder>
                             <radius>{radius}</radius>
-                            <length>{length}</length>
+                            <length>{halfLength *2}</length>
                         </cylinder>
                     </geometry>
                 </collision>

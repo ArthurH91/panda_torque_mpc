@@ -41,6 +41,7 @@ class ObstaclesVisualizer:
         self._markers = MarkerArray()
         header = Header(frame_id="world", stamp=rospy.Time.now())
         for iter, (key, obstacle) in enumerate(self._obstacles_infos.items()):
+            
             pose=self._parse_poses(obstacle)
  
             sp_req = SpawnModelRequest(
@@ -62,13 +63,20 @@ class ObstaclesVisualizer:
                 frame_locked=False,
             )
             if obstacle["type"] == "sphere":
-                m.scale = Vector3(**dict(zip("xyz", [obstacle["radius"]] * 3)))
+                m.scale = Vector3(**dict(zip("xyz", [obstacle["radius"] * 2] * 3)))
                 m.type = Marker.SPHERE
                 sp_req.model_xml = sdf_generator.generate_sphere(key[1:], obstacle["radius"])
-
+            if obstacle["type"] == "cylinder":
+                m.scale = Vector3(x = obstacle["radius"], y = obstacle["radius"], z = obstacle["halfLength"])
+                m.type = Marker.CYLINDER
+                sp_req.model_xml = sdf_generator.generate_cylinder(key[1:], obstacle["radius"],obstacle["halfLength"] )
+            if obstacle["type"] == "box":
+                m.scale = Vector3(x = obstacle["x"], y = obstacle["y"], z = obstacle["z"])
+                m.type = Marker.CUBE
+                sp_req.model_xml = sdf_generator.generate_box(key[1:], [obstacle["x"],obstacle["y"], obstacle["z"] ])
                 
-                print(f"key: {key[1:]}")
-                print(f"sp_req.model_xml: {sp_req.model_xml}")
+            print(f"key: {key[1:]}")
+            print(f"sp_req.model_xml: {sp_req.model_xml}")
             self._spawn_model_requests.append(sp_req)
             self._markers.markers.append(m)
 
@@ -110,6 +118,7 @@ class ObstaclesVisualizer:
         )
 
     def _publish_markers_cb(self, kwargs) -> None:
+        print(f"key: {self._markers}")
         self._marker_pub.publish(self._markers)
       
 
