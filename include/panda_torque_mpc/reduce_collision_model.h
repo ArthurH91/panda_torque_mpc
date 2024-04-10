@@ -1,0 +1,86 @@
+#pragma once
+
+#include <Eigen/Core>
+#include <boost/smart_ptr/shared_ptr.hpp>
+#include <chrono>
+#include <geometry_msgs/Pose.h>
+#include <geometry_msgs/PoseStamped.h>
+#include <ratio>
+#include <ros/node_handle.h>
+#include <ros/package.h>
+#include <std_msgs/Header.h>
+#include <vector>
+
+#include <pinocchio/algorithm/model.hpp>
+#include <pinocchio/parsers/srdf.hpp>
+#include <pinocchio/parsers/urdf.hpp>
+#include <pinocchio/spatial/explog.hpp>
+#include <pinocchio/spatial/motion.hpp>
+#include <pinocchio/spatial/se3.hpp>
+#include <pinocchio/algorithm/geometry.hpp>
+#include <pinocchio/algorithm/joint-configuration.hpp>
+#include <pinocchio/fwd.hpp>
+#include <pinocchio/multibody/model.hpp>
+
+#include <hpp/fcl/collision_object.h>
+#include <hpp/fcl/shape/geometric_shapes.h>
+
+namespace panda_torque_mpc {
+boost::shared_ptr<pinocchio::GeometryModel> reduce_capsules_robot(
+    const boost::shared_ptr<pinocchio::GeometryModel> &collision_model) {
+  auto reduced_collision_model =
+      boost::make_shared<pinocchio::GeometryModel>(*collision_model);
+  std::vector<std::string> list_names_capsules;
+
+  for (pinocchio::GeomIndex geom_id = 0;
+       geom_id < (pinocchio::GeomIndex)collision_model->ngeoms; ++geom_id) {
+
+    pinocchio::GeometryObject &geometry_object =
+        collision_model->geometryObjects[geom_id];
+
+    if (dynamic_cast<hpp::fcl::Cylinder*>(geometry_object.geometry.get()) != nullptr) {
+
+      size_t last_underscore_pos = geometry_object.name.rfind('_');
+      std::string geom_name = geometry_object.name;
+      std::string link_name = geom_name.substr(0, last_underscore_pos);
+
+      if ((collision_model->existGeometryName(link_name + "_1") &&
+           collision_model->existGeometryName(link_name + "_2")) ||
+          (collision_model->existGeometryName(link_name + "_4") &&
+           collision_model->existGeometryName(link_name + "_5"))) {
+        
+        std::string capsule_name, sphere1_name, sphere2_name;
+        if (std::find(list_names_capsules.begin(), list_names_capsules.end(),
+                      link_name + "_0") == list_names_capsules.end()) {
+          capsule_name = link_name + "_0";
+          sphere1_name = link_name + "_1";
+          sphere2_name = link_name + "_2";
+         
+        } else {
+          capsule_name = link_name + "_1";
+          sphere1_name = link_name + "_4";
+          sphere2_name = link_name + "_5";
+
+        }
+        list_names_capsules.push_back(capsule_name);
+
+        const auto cylinder_geom = static_cast<hpp::fcl::Cylinder*>(geometry_object.geometry.get());
+        auto geometry = pinocchio::GeometryObject::CollisionGeometryPtr(
+            new hpp::fcl::Capsule(cylinder_geom->radius,
+                                  cylinder_geom->halfLength));
+
+        pinocchio::GeometryObject capsule(
+            capsule_name, geometry_object.parentJoint,
+            geometry_object.parentFrame, geometry, geometry_object.placement);
+
+        reduced_collision_model->addGeometryObject(capsule);
+        reduced_collision_model->removeGeometryObject(geom_name);
+        reduced_collision_model->removeGeometryObject(sphere1_name);
+        reduced_collision_model->removeGeometryObject(sphere2_name);
+      }
+    }
+  }
+  return reduced_collision_model;
+}
+
+} // namespace panda_torque_mpc

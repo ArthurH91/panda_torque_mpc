@@ -27,3 +27,4 @@ collision_pairs:
     - ["panda_rightfinger_0", "obstacle4"]
     - ["panda_leftfinger_0", "obstacle3"]
     - ["panda_rightfinger_0", "obstacle3"]
+    - ["panda_link1_sc_0", "obstacle4"]

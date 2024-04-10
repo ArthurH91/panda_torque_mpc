@@ -145,12 +145,19 @@ void ObstacleParamsParser::addCollisions() {
                   XmlRpc::XmlRpcValue::TypeString &&
               collision_pairs[i][1].getType() ==
                   XmlRpc::XmlRpcValue::TypeString) {
-            std::string object1 =
+            std::string name_object1 =
                 static_cast<std::string>(collision_pairs[i][0]);
-            std::string object2 =
+            if (!collision_model_->existGeometryName(name_object1)){
+              std::cerr << "Object " << name_object1 << " doesn't exist in the collision model." << std::endl;
+              return;
+            }
+            std::string name_object2 =
                 static_cast<std::string>(collision_pairs[i][1]);
-
-            addCollisionPair(object1, object2);
+            if (!collision_model_->existGeometryName(name_object2)){
+              std::cerr << "Object " << name_object2 << " doesn't exist in the collision model." << std::endl;
+              return;
+            }
+            addCollisionPair(name_object1, name_object2);
           } else {
             std::cerr << "Invalid collision pair type for collision pair " << i
                       << std::endl;
