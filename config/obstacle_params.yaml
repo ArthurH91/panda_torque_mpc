@@ -2,25 +2,25 @@ obstacle1:
     type: "capsule"
     radius: 0.1
     halfLength: 0.05
-    translation: [0.0,0.0,0.8]  # tx,ty,tz
+    translation: [0.0,0.0,0.85]  # tx,ty,tz
     rotation: [ 0.707, 0.0, -0.707 ,  0.0] #qx,qy,qz,qw     
 obstacle2:
     type: "capsule"
     radius: 0.1
     halfLength: 0.05
-    translation: [0.0,0.3,0.8]  # tx,ty,tz
+    translation: [0.0,0.3,0.85]  # tx,ty,tz
     rotation: [ 0.707, 0.0, -0.707 ,  0.0] #qx,qy,qz,qw       
 obstacle3:
     type: "capsule"
     radius: 0.1
     halfLength: 0.05
-    translation: [-0.15,0.15,0.8]  # tx,ty,tz
+    translation: [-0.15,0.15,0.85]  # tx,ty,tz
     rotation: [ 0.0,-0.707, 0.707,  0.0] #qx,qy,qz,qw     
 obstacle4:
     type: "capsule"
     radius: 0.1
     halfLength: 0.05
-    translation: [0.15,0.15,0.8]  # tx,ty,tz
+    translation: [0.15,0.15,0.85]  # tx,ty,tz
     rotation: [ 0.0,-0.707, 0.707,  0.0] #qx,qy,qz,qw  
 collision_pairs: 
     - ["panda_leftfinger_0", "obstacle1"]

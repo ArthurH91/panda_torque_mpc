@@ -176,7 +176,7 @@ ctrl_mpc_linearized:
     # OCP motion server configs
     # nb_shooting_nodes: 20
 
-    dt_ocp: 0.05
+    dt_ocp: 0.1
     # nb_iterations_max: 1
     reference_is_placement: true   # otherwise, translation
     keep_original_ee_rotation: false
