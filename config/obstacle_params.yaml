@@ -1,33 +1,35 @@
 obstacle1:
     type: "capsule"
-    radius: 0.1
-    halfLength: 0.05
-    translation: [0.0,0.0,0.85]  # tx,ty,tz
+    radius: 0.12
+    halfLength: 0.15
+    translation: [0.0,0.0,0.87]  # tx,ty,tz
     rotation: [ 0.707, 0.0, -0.707 ,  0.0] #qx,qy,qz,qw     
-obstacle2:
-    type: "capsule"
-    radius: 0.1
-    halfLength: 0.05
-    translation: [0.0,0.3,0.85]  # tx,ty,tz
-    rotation: [ 0.707, 0.0, -0.707 ,  0.0] #qx,qy,qz,qw       
-obstacle3:
-    type: "capsule"
-    radius: 0.1
-    halfLength: 0.05
-    translation: [-0.15,0.15,0.85]  # tx,ty,tz
-    rotation: [ 0.0,-0.707, 0.707,  0.0] #qx,qy,qz,qw     
-obstacle4:
-    type: "capsule"
-    radius: 0.1
-    halfLength: 0.05
-    translation: [0.15,0.15,0.85]  # tx,ty,tz
-    rotation: [ 0.0,-0.707, 0.707,  0.0] #qx,qy,qz,qw  
+# obstacle2:
+#     type: "capsule"
+#     radius: 0.1
+#     halfLength: 0.05
+#     translation: [0.0,0.4,0.9]  # tx,ty,tz
+#     rotation: [ 0.707, 0.0, -0.707 ,  0.0] #qx,qy,qz,qw       
+# obstacle3:
+#     type: "capsule"
+#     radius: 0.1
+#     halfLength: 0.05
+#     translation: [-0.15,0.15,0.9]  # tx,ty,tz
+#     rotation: [ 0.0,-0.707, 0.707,  0.0] #qx,qy,qz,qw     
+# obstacle4:
+#     type: "capsule"
+#     radius: 0.1
+#     halfLength: 0.05
+#     translation: [0.15,0.15,0.9]  # tx,ty,tz
+#     rotation: [ 0.0,-0.707, 0.707,  0.0] #qx,qy,qz,qw  
 collision_pairs: 
     - ["panda_leftfinger_0", "obstacle1"]
     - ["panda_rightfinger_0", "obstacle1"]
-    - ["panda_leftfinger_0", "obstacle2"]
-    - ["panda_rightfinger_0", "obstacle2"]
-    - ["panda_leftfinger_0", "obstacle3"]
-    - ["panda_rightfinger_0", "obstacle3"]
-    - ["panda_leftfinger_0", "obstacle4"]
-    - ["panda_rightfinger_0", "obstacle4"]
+    # - ["panda_leftfinger_0", "obstacle2"]
+    # - ["panda_rightfinger_0", "obstacle2"]
+    # - ["panda_leftfinger_0", "obstacle3"]
+    # - ["panda_rightfinger_0", "obstacle3"]
+    # - ["panda_leftfinger_0", "obstacle4"]
+    # - ["panda_rightfinger_0", "obstacle4"]
+    - ["panda_rightfinger_0", "support_link_0"]
+

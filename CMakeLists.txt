@@ -163,7 +163,7 @@ install(FILES
   launch/sim_controllers.launch
   launch/crocoddyl_motion_server_node.launch
   launch/simulation.launch
-  launch/gazebo_addd_obstacles.launch
+  launch/gazebo_add_obstacles.launch
   DESTINATION
   ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
   )
