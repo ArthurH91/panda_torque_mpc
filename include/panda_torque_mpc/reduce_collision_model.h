@@ -25,6 +25,8 @@
 #include <hpp/fcl/collision_object.h>
 #include <hpp/fcl/shape/geometric_shapes.h>
 
+/// Only works for the current PANDA URDF as it depends on the positions of the spheres/cylinders in the URDF.
+
 namespace panda_torque_mpc {
 boost::shared_ptr<pinocchio::GeometryModel> reduce_capsules_robot(
     const boost::shared_ptr<pinocchio::GeometryModel> &collision_model) {
