@@ -16,8 +16,7 @@ boost::shared_ptr<pinocchio::GeometryModel> reduce_capsules_robot(
       boost::make_shared<pinocchio::GeometryModel>(*collision_model);
   std::vector<std::string> list_names_capsules;
 
-  for (pinocchio::GeomIndex geom_id = 0;
-       geom_id < (pinocchio::GeomIndex)collision_model->ngeoms; ++geom_id) {
+  for (size_t geom_id = 0; geom_id < collision_model->ngeoms; geom_id++) {
 
     pinocchio::GeometryObject &geometry_object =
         collision_model->geometryObjects[geom_id];
