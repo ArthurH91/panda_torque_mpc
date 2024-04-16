@@ -6,7 +6,6 @@ import rospy
 
 from std_msgs.msg import Header
 from geometry_msgs.msg import Pose
-from tf.transformations import quaternion_from_euler
 from geometry_msgs.msg import Point, Quaternion, Vector3
 from visualization_msgs.msg import Marker, MarkerArray
 from std_msgs.msg import ColorRGBA, Header
