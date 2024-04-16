@@ -106,10 +106,9 @@ class ObstaclesVisualizer:
         #   Timers
         # -------------------------------
 
-        self._publish_frequency = 10
+        # Publish markers at 10 Hz
         self._control_loop = rospy.Timer(
-            rospy.Duration(1.0 / self._publish_frequency),
-            self._publish_markers_cb,
+            rospy.Duration(0.1, self._publish_markers_cb,
         )
 
         rospy.loginfo(f"[{rospy.get_name()}] Node started")
