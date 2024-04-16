@@ -36,11 +36,16 @@ boost::shared_ptr<pinocchio::GeometryModel> reduce_capsules_robot(
         std::string capsule_name, sphere1_name, sphere2_name;
         if (std::find(list_names_capsules.begin(), list_names_capsules.end(),
                       link_name + "_0") == list_names_capsules.end()) {
+
+          /// If the cylinder has the name finishing by _0; then the two corresponding spheres have
+          /// the names finishing by _1 and _2. That's how the URDF is made here.
           capsule_name = link_name + "_0";
           sphere1_name = link_name + "_1";
           sphere2_name = link_name + "_2";
          
         } else {
+          /// Same logic here but if there is another capsule representing the link of the robot, 
+          /// the second cylinder will have _3 at the end and _4 and _5 for the spheres.
           capsule_name = link_name + "_1";
           sphere1_name = link_name + "_4";
           sphere2_name = link_name + "_5";
