@@ -7,11 +7,11 @@ import rospy
 from std_msgs.msg import Header
 from geometry_msgs.msg import Pose
 from geometry_msgs.msg import Point, Quaternion, Vector3
+from gazebo_msgs.srv import SpawnModel, SpawnModelRequest
 from visualization_msgs.msg import Marker, MarkerArray
 from std_msgs.msg import ColorRGBA, Header
-from SDFGenerator import SDFGenerator
 
-from gazebo_msgs.srv import SpawnModel, SpawnModelRequest
+from SDFGenerator import SDFGenerator
 
 
 class ObstaclesVisualizer:
