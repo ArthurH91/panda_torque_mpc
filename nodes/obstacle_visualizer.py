@@ -6,13 +6,12 @@ import rospy
 
 from std_msgs.msg import Header
 from geometry_msgs.msg import Pose
-from tf.transformations import quaternion_from_euler
 from geometry_msgs.msg import Point, Quaternion, Vector3
+from gazebo_msgs.srv import SpawnModel, SpawnModelRequest
 from visualization_msgs.msg import Marker, MarkerArray
 from std_msgs.msg import ColorRGBA, Header
-from SDFGenerator import SDFGenerator
 
-from gazebo_msgs.srv import SpawnModel, SpawnModelRequest
+from SDFGenerator import SDFGenerator
 
 
 class ObstaclesVisualizer:
@@ -24,8 +23,9 @@ class ObstaclesVisualizer:
 
         if not rospy.has_param("~obstacle1"):
             rospy.logerr(
-                f"[{rospy.get_name()}] Param obstacle1 not found. No collision avoidance with an external obstacle computed!"
-            )        
+                f"[{rospy.get_name()}] Param obstacle1 not found. "
+                "No collision avoidance with an external obstacle computed!"
+            )           
 
         self._obstacles_infos = {}
         self._obstacles = []
@@ -44,8 +44,9 @@ class ObstaclesVisualizer:
             
             pose=self._parse_poses(obstacle)
  
+           obstacle_name = key.lstrip("~")
             sp_req = SpawnModelRequest(
-                model_name = key[1:],
+                model_name = obstacle_name,
                 robot_namespace = "",
                 initial_pose = pose,
                 reference_frame = header.frame_id
@@ -105,10 +106,9 @@ class ObstaclesVisualizer:
         #   Timers
         # -------------------------------
 
-        self._publish_frequency = 10
+        # Publish markers at 10 Hz
         self._control_loop = rospy.Timer(
-            rospy.Duration(1.0 / self._publish_frequency),
-            self._publish_markers_cb,
+            rospy.Duration(0.1, self._publish_markers_cb,
         )
 
         rospy.loginfo(f"[{rospy.get_name()}] Node started")

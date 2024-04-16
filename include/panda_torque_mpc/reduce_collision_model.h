@@ -1,28 +1,12 @@
 #pragma once
 
-#include <Eigen/Core>
 #include <boost/smart_ptr/shared_ptr.hpp>
-#include <chrono>
-#include <geometry_msgs/Pose.h>
-#include <geometry_msgs/PoseStamped.h>
-#include <ratio>
-#include <ros/node_handle.h>
-#include <ros/package.h>
-#include <std_msgs/Header.h>
 #include <vector>
 
-#include <pinocchio/algorithm/model.hpp>
-#include <pinocchio/parsers/srdf.hpp>
-#include <pinocchio/parsers/urdf.hpp>
-#include <pinocchio/spatial/explog.hpp>
-#include <pinocchio/spatial/motion.hpp>
-#include <pinocchio/spatial/se3.hpp>
-#include <pinocchio/algorithm/geometry.hpp>
-#include <pinocchio/algorithm/joint-configuration.hpp>
-#include <pinocchio/fwd.hpp>
-#include <pinocchio/multibody/model.hpp>
+#include <pinocchio/multibody/geometry.hpp>
+#include <pinocchio/multibody/fcl.hpp>
+#include <pinocchio/multibody/fwd.hpp>
 
-#include <hpp/fcl/collision_object.h>
 #include <hpp/fcl/shape/geometric_shapes.h>
 
 /// Only works for the current PANDA URDF as it depends on the positions of the spheres/cylinders in the URDF.
@@ -34,17 +18,15 @@ boost::shared_ptr<pinocchio::GeometryModel> reduce_capsules_robot(
       boost::make_shared<pinocchio::GeometryModel>(*collision_model);
   std::vector<std::string> list_names_capsules;
 
-  for (pinocchio::GeomIndex geom_id = 0;
-       geom_id < (pinocchio::GeomIndex)collision_model->ngeoms; ++geom_id) {
+  for (size_t geom_id = 0; geom_id < collision_model->ngeoms; geom_id++) {
 
-    pinocchio::GeometryObject &geometry_object =
-        collision_model->geometryObjects[geom_id];
+   auto &geometry_object = collision_model->geometryObjects[geom_id];
 
     if (dynamic_cast<hpp::fcl::Cylinder*>(geometry_object.geometry.get()) != nullptr) {
 
-      size_t last_underscore_pos = geometry_object.name.rfind('_');
-      std::string geom_name = geometry_object.name;
-      std::string link_name = geom_name.substr(0, last_underscore_pos);
+      const size_t last_underscore_pos = geometry_object.name.rfind('_');
+      const std::string geom_name = geometry_object.name;
+      const std::string link_name = geom_name.substr(0, last_underscore_pos);
 
       if ((collision_model->existGeometryName(link_name + "_1") &&
            collision_model->existGeometryName(link_name + "_2")) ||
@@ -67,11 +49,11 @@ boost::shared_ptr<pinocchio::GeometryModel> reduce_capsules_robot(
         list_names_capsules.push_back(capsule_name);
 
         const auto cylinder_geom = static_cast<hpp::fcl::Cylinder*>(geometry_object.geometry.get());
-        auto geometry = pinocchio::GeometryObject::CollisionGeometryPtr(
+        const auto geometry = pinocchio::GeometryObject::CollisionGeometryPtr(
             new hpp::fcl::Capsule(cylinder_geom->radius,
                                   cylinder_geom->halfLength));
 
-        pinocchio::GeometryObject capsule(
+        const pinocchio::GeometryObject capsule(
             capsule_name, geometry_object.parentJoint,
             geometry_object.parentFrame, geometry, geometry_object.placement);
 
