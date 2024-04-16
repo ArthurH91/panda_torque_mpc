@@ -44,8 +44,9 @@ class ObstaclesVisualizer:
             
             pose=self._parse_poses(obstacle)
  
+           obstacle_name = key.lstrip("~")
             sp_req = SpawnModelRequest(
-                model_name = key[1:],
+                model_name = obstacle_name,
                 robot_namespace = "",
                 initial_pose = pose,
                 reference_frame = header.frame_id
