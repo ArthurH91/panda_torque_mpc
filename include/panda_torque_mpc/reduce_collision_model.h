@@ -22,9 +22,9 @@ boost::shared_ptr<pinocchio::GeometryModel> reduce_capsules_robot(
 
     if (dynamic_cast<hpp::fcl::Cylinder*>(geometry_object.geometry.get()) != nullptr) {
 
-      size_t last_underscore_pos = geometry_object.name.rfind('_');
-      std::string geom_name = geometry_object.name;
-      std::string link_name = geom_name.substr(0, last_underscore_pos);
+      const size_t last_underscore_pos = geometry_object.name.rfind('_');
+      const std::string geom_name = geometry_object.name;
+      const std::string link_name = geom_name.substr(0, last_underscore_pos);
 
       if ((collision_model->existGeometryName(link_name + "_1") &&
            collision_model->existGeometryName(link_name + "_2")) ||
