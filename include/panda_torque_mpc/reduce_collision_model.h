@@ -47,7 +47,7 @@ boost::shared_ptr<pinocchio::GeometryModel> reduce_capsules_robot(
         list_names_capsules.push_back(capsule_name);
 
         const auto cylinder_geom = static_cast<hpp::fcl::Cylinder*>(geometry_object.geometry.get());
-        auto geometry = pinocchio::GeometryObject::CollisionGeometryPtr(
+        const auto geometry = pinocchio::GeometryObject::CollisionGeometryPtr(
             new hpp::fcl::Capsule(cylinder_geom->radius,
                                   cylinder_geom->halfLength));
 
