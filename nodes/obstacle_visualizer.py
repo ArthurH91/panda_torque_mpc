@@ -23,8 +23,9 @@ class ObstaclesVisualizer:
 
         if not rospy.has_param("~obstacle1"):
             rospy.logerr(
-                f"[{rospy.get_name()}] Param obstacle1 not found. No collision avoidance with an external obstacle computed!"
-            )        
+                f"[{rospy.get_name()}] Param obstacle1 not found. "
+                "No collision avoidance with an external obstacle computed!"
+            )           
 
         self._obstacles_infos = {}
         self._obstacles = []
