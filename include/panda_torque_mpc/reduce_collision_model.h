@@ -1,28 +1,12 @@
 #pragma once
 
-#include <Eigen/Core>
 #include <boost/smart_ptr/shared_ptr.hpp>
-#include <chrono>
-#include <geometry_msgs/Pose.h>
-#include <geometry_msgs/PoseStamped.h>
-#include <ratio>
-#include <ros/node_handle.h>
-#include <ros/package.h>
-#include <std_msgs/Header.h>
 #include <vector>
 
-#include <pinocchio/algorithm/model.hpp>
-#include <pinocchio/parsers/srdf.hpp>
-#include <pinocchio/parsers/urdf.hpp>
-#include <pinocchio/spatial/explog.hpp>
-#include <pinocchio/spatial/motion.hpp>
-#include <pinocchio/spatial/se3.hpp>
-#include <pinocchio/algorithm/geometry.hpp>
-#include <pinocchio/algorithm/joint-configuration.hpp>
-#include <pinocchio/fwd.hpp>
-#include <pinocchio/multibody/model.hpp>
+#include <pinocchio/multibody/geometry.hpp>
+#include <pinocchio/multibody/fcl.hpp>
+#include <pinocchio/multibody/fwd.hpp>
 
-#include <hpp/fcl/collision_object.h>
 #include <hpp/fcl/shape/geometric_shapes.h>
 
 namespace panda_torque_mpc {
