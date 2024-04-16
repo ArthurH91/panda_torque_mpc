@@ -104,6 +104,14 @@ void ObstacleParamsParser::addCollisions() {
         pnh_->getParam(obstacle_name + "/halfLength", halfLength);
         geometry = pinocchio::GeometryObject::CollisionGeometryPtr(
             new hpp::fcl::Cylinder(radius, halfLength));
+      } else {
+        std::cerr << "No dimension or wrong dimensions in the obstacle "
+                     "config. Try to use "
+                     "the ones for the shapes desired, such as 'radius' for "
+                     "'sphere','x', 'y', 'z' for 'box' or 'halfLength' and "
+                     "'radius' for 'cylinder' and 'capsule."
+                  << std::endl;
+        return;
       }
     } else if (type == "capsule") {
       double radius;
@@ -114,6 +122,14 @@ void ObstacleParamsParser::addCollisions() {
         pnh_->getParam(obstacle_name + "/halfLength", halfLength);
         geometry = pinocchio::GeometryObject::CollisionGeometryPtr(
             new hpp::fcl::Capsule(radius, halfLength));
+      } else {
+        std::cerr << "No dimension or wrong dimensions in the obstacle "
+                     "config. Try to use "
+                     "the ones for the shapes desired, such as 'radius' for "
+                     "'sphere','x', 'y', 'z' for 'box' or 'halfLength' and "
+                     "'radius' for 'cylinder' and 'capsule."
+                  << std::endl;
+        return;
       }
     }
 

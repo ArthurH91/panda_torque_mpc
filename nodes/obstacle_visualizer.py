@@ -41,18 +41,14 @@ class ObstaclesVisualizer:
         self._markers = MarkerArray()
         header = Header(frame_id="world", stamp=rospy.Time.now())
         for iter, (key, obstacle) in enumerate(self._obstacles_infos.items()):
-            
             pose=self._parse_poses(obstacle)
- 
-           obstacle_name = key.lstrip("~")
+            obstacle_name = key.lstrip("~")
             sp_req = SpawnModelRequest(
                 model_name = obstacle_name,
                 robot_namespace = "",
                 initial_pose = pose,
                 reference_frame = header.frame_id
             )
-            
-
             m = Marker(
                 header=header,
                 ns="",
@@ -79,8 +75,6 @@ class ObstaclesVisualizer:
                 m.scale = Vector3(x = obstacle["radius"], y = obstacle["radius"], z = obstacle["halfLength"])
                 m.type = Marker.CYLINDER
                 sp_req.model_xml = sdf_generator.generate_capsule(key[1:], obstacle["radius"],obstacle["halfLength"] )              
-            print(f"key: {key[1:]}")
-            print(f"sp_req.model_xml: {sp_req.model_xml}")
             self._spawn_model_requests.append(sp_req)
             self._markers.markers.append(m)
 
@@ -106,11 +100,12 @@ class ObstaclesVisualizer:
         #   Timers
         # -------------------------------
 
-        # Publish markers at 10 Hz
+        # Publish markers at 10 Hz        
+        self._publish_frequency = 10
         self._control_loop = rospy.Timer(
-            rospy.Duration(0.1, self._publish_markers_cb,
+            rospy.Duration(1.0 / self._publish_frequency),
+            self._publish_markers_cb,
         )
-
         rospy.loginfo(f"[{rospy.get_name()}] Node started")
 
     def _parse_poses(self, obstacle: Dict[str, List[float]]) -> Pose:
@@ -121,7 +116,6 @@ class ObstaclesVisualizer:
         )
 
     def _publish_markers_cb(self, kwargs) -> None:
-        print(f"key: {self._markers}")
         self._marker_pub.publish(self._markers)
       
 
