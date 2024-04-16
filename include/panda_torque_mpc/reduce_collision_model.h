@@ -51,7 +51,7 @@ boost::shared_ptr<pinocchio::GeometryModel> reduce_capsules_robot(
             new hpp::fcl::Capsule(cylinder_geom->radius,
                                   cylinder_geom->halfLength));
 
-        pinocchio::GeometryObject capsule(
+        const pinocchio::GeometryObject capsule(
             capsule_name, geometry_object.parentJoint,
             geometry_object.parentFrame, geometry, geometry_object.placement);
 
