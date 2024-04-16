@@ -2,7 +2,7 @@ import math
 import random
 
 class SDFGenerator:
-    def __init__(self):
+    def __init__(self) -> None:
         self._available_colors = [
             "Gazebo/Red",
             "Gazebo/Blue",
@@ -28,6 +28,16 @@ class SDFGenerator:
         return random.choice(self._available_colors)
 
     def generate_box(self, name, size):
+        """      
+        Generates SDF syntax for a box.
+
+        Parameters:
+            name (str): Name of the box.
+            size (tuple): Size of the box in (width, height, depth).
+            
+        Returns:
+            str: SDF syntax for the box.
+        """
         # Generate random color
         color = self._generate_random_color()
 
@@ -110,6 +120,17 @@ class SDFGenerator:
         return sdf
 
     def generate_cylinder(self, name, radius, halfLength):
+        """
+        Generates SDF syntax for a cylinder.
+
+        Parameters:
+            name (str): Name of the cylinder.
+            radius (float): Radius of the cylinder.
+            helfLength (float): halfLength of the cylinder.
+
+        Returns:
+            str: SDF syntax for the cylinder.
+        """
         # Generate random color
         color = self._generate_random_color()
 
@@ -243,11 +264,3 @@ class SDFGenerator:
         </model>
         """
         return sdf
-
-
-if __name__ == "__main__":
-    
-    u = SDFGenerator()
-    name = "obstacle"
-    radius = 1
-    print(u.generate_box(name, (1,1,1), include_collision=True))
