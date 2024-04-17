@@ -118,7 +118,7 @@ class ObstaclesVisualizer:
       
 
 
-def main():
+def main() -> None:
 
     marker_publisher = ObstaclesVisualizer("obstacles_visualizer")
     rospy.spin()

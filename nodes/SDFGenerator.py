@@ -72,7 +72,7 @@ class SDFGenerator:
         """
         return sdf
 
-    def generate_sphere(self, name: str, radius: float):
+    def generate_sphere(self, name: str, radius: float) -> str:
         """
         Generates SDF syntax for a sphere.
 
@@ -119,7 +119,7 @@ class SDFGenerator:
         """
         return sdf
 
-    def generate_cylinder(self, name: str, radius: float, halfLength: float):
+    def generate_cylinder(self, name: str, radius: float, halfLength: float) -> str:
         """
         Generates SDF syntax for a cylinder.
 
