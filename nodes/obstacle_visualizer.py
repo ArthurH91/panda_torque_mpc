@@ -79,15 +79,16 @@ class ObstaclesVisualizer:
             self._markers.markers.append(m)
 
 
-        rospy.wait_for_service("/gazebo/spawn_urdf_model")
-        try:
-            model_spawner = rospy.ServiceProxy("/gazebo/spawn_sdf_model", SpawnModel)
-            for sp_req in self._spawn_model_requests:
-                resp = model_spawner(sp_req)
-                if not resp.success:
-                    rospy.logerr("spawning model didn't work.")
-        except rospy.ServiceException as e:
-            print("Service call failed: %s" % e)
+        if rospy.get_param("~spawn_in_gz", default=False):   
+            rospy.wait_for_service("/gazebo/spawn_urdf_model")
+            try:
+                model_spawner = rospy.ServiceProxy("/gazebo/spawn_sdf_model", SpawnModel)
+                for sp_req in self._spawn_model_requests:
+                    resp = model_spawner(sp_req)
+                    if not resp.success:
+                        rospy.logerr("spawning model didn't work.")
+            except rospy.ServiceException as e:
+                print("Service call failed: %s" % e)
 
         # -------------------------------
         #   Publishers
