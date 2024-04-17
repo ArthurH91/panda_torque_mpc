@@ -28,7 +28,6 @@ class ObstaclesVisualizer:
             )           
 
         self._obstacles_infos = {}
-        self._obstacles = []
         while rospy.has_param("~obstacle" + str(obstacle_idx)):
             obstacle_name = "~obstacle" + str(obstacle_idx)
             self._obstacles_infos.update(
@@ -102,10 +101,8 @@ class ObstaclesVisualizer:
         # -------------------------------
 
         # Publish markers at 10 Hz        
-        self._publish_frequency = 10
         self._control_loop = rospy.Timer(
-            rospy.Duration(1.0 / self._publish_frequency),
-            self._publish_markers_cb,
+            rospy.Duration(0.1), self._publish_markers_cb,
         )
         rospy.loginfo(f"[{rospy.get_name()}] Node started")
 

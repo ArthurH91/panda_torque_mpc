@@ -18,7 +18,7 @@ class SDFGenerator:
             "Gazebo/Indigo"
         ]
 
-    def _generate_random_color(self):
+    def _generate_random_color(self) -> str:
         """
         Generates a random color from the available colors in Gazebo materials.
 
@@ -27,7 +27,7 @@ class SDFGenerator:
         """
         return random.choice(self._available_colors)
 
-    def generate_box(self, name, size):
+    def generate_box(self, name: str, size: float) -> str:
         """      
         Generates SDF syntax for a box.
 
@@ -72,7 +72,7 @@ class SDFGenerator:
         """
         return sdf
 
-    def generate_sphere(self, name, radius):
+    def generate_sphere(self, name: str, radius: float):
         """
         Generates SDF syntax for a sphere.
 
@@ -119,7 +119,7 @@ class SDFGenerator:
         """
         return sdf
 
-    def generate_cylinder(self, name, radius, halfLength):
+    def generate_cylinder(self, name: str, radius: float, halfLength: float):
         """
         Generates SDF syntax for a cylinder.
 
@@ -168,7 +168,7 @@ class SDFGenerator:
         return sdf      
 
 
-    def generate_capsule(self, name, radius, halfLength):
+    def generate_capsule(self, name: str, radius: float, halfLength: float) -> str:
         """
         Generates SDF syntax for a capsule.
 
