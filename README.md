@@ -51,6 +51,7 @@ rosdep update --rosdistro $ROS_DISTRO
 rosdep install -y -i --from-paths src --rosdistro $ROS_DISTRO
 catkin build -j12 --cmake-args \
     -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_UNIT_TEST=OFF \
     -DBUILD_PYTHON_INTERFACE=OFF \
     -DBUILD_WITH_URDF_SUPPORT=ON \
     -DBUILD_WITH_COLLISION_SUPPORT=ON
