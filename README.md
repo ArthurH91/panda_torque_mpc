@@ -55,7 +55,7 @@ catkin build -j12 --cmake-args \
     -DBUILD_PYTHON_INTERFACE=OFF \
     -DBUILD_WITH_URDF_SUPPORT=ON \
     -DBUILD_WITH_COLLISION_SUPPORT=ON
-cd ../panda_ws
+cd ../ros_ws
 source ../deps_ws/devel/setup.bash
 rosdep install -y -i --from-paths src --rosdistro $ROS_DISTRO
 catkin build --cmake-args \
