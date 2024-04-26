@@ -47,8 +47,9 @@ git clone https://github.com/ArthurH91/panda_torque_mpc.git ros_ws/src/panda_tor
 vcs import --recursive < ros_ws/src/panda_torque_mpc/panda_torque_mpc.repos deps_ws/src
 cd deps_ws
 source /opt/ros/noetic/setup.bash
+sudo apt update
 rosdep update --rosdistro $ROS_DISTRO
-rosdep install -y -i --from-paths src --rosdistro $ROS_DISTRO
+rosdep install -y -i --from-paths src --rosdistro $ROS_DISTRO --skip-keys libfranka
 catkin build -j12 --cmake-args \
     -DCMAKE_BUILD_TYPE=Release \
     -DBUILD_UNIT_TEST=OFF \
