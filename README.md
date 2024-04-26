@@ -40,11 +40,11 @@ catkin build -j12 --cmake-args \
 > ROS path to stop working! To build the package in separate workspace follow:
 ```bash
 # Main workspace with the package
-mkdir -p panda_ws/src
+mkdir -p ros_ws/src 
 # Isolated workspace for dependencies
 mkdir -p deps_ws/src
-git clone https://github.com/ArthurH91/panda_torque_mpc.git panda_ws/src/panda_torque_mpc
-vcs import --recursive < panda_ws/src/panda_torque_mpc/panda_torque_mpc.repos deps_ws/src
+git clone https://github.com/ArthurH91/panda_torque_mpc.git ros_ws/src/panda_torque_mpc
+vcs import --recursive < ros_ws/src/panda_torque_mpc/panda_torque_mpc.repos deps_ws/src
 cd deps_ws
 source /opt/ros/noetic/setup.bash
 rosdep update --rosdistro $ROS_DISTRO
