@@ -190,6 +190,7 @@ namespace panda_torque_mpc
             config_croco_.w_u_reg_running = w_u_reg_running;
             config_croco_.diag_u_reg_running = Eigen::Map<Eigen::Matrix<double, 7, 1>>(diag_u_reg_running.data());
             config_croco_.armature = Eigen::Map<Eigen::Matrix<double, 7, 1>>(armature.data());
+            config_croco_.changing_weights = changing_weights;
 
             // For the changing weights
             TargetsConfig targ_config_;
