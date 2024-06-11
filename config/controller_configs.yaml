@@ -218,6 +218,19 @@ ctrl_mpc_linearized:
     w_u_reg_running: 0.001
     diag_u_reg_running: [1.,1.,1.,1.,1.,1.,1.]
 
+    ##### WEIGHTS FROM THEO
+    # targets params
+    changing_weights: true
+    pose_target1: [0.0, -0.35, 1.0, 0.0, 1.0, 0.0, 0.0]
+    pose_target2: [0.0, 0.35, 1.0, 0.0, 1.0, 0.0, 0.0]
+    publish_frequency: 0.25
+
+    # Parameters to modify the curve of the target weight function
+    w_slope: 11
+    max_w: 500 
+    w_cut: 1
+    #w_s=18.5 max_w=115, nb_nodes=40, niter=1 freq=0.5
+
     ################################
     # Visual servoing mode reference
     ################################
