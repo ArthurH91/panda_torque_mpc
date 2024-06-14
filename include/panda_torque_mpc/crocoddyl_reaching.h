@@ -98,6 +98,10 @@ namespace panda_torque_mpc
         void set_ee_ref_placement_changing_weights(double time, bool is_active=true, double uniform_weight_scaling=1.0);
         void set_posture_ref(Eigen::VectorXd x0);
 
+        boost::shared_ptr<mim_solvers::SolverCSQP> get_solver(){
+            return ocp_;
+        }
+
         // boost::shared_ptr<crocoddyl::SolverFDDP> ocp_;
         // boost::shared_ptr<mim_solvers::SolverSQP> ocp_;
         boost::shared_ptr<mim_solvers::SolverCSQP> ocp_;
